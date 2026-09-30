@@ -59,3 +59,143 @@ id,text,label
 58,"Class representatives are requested to submit the weekly lecture attendance summary sheets.",Attendance
 59,"Full-stack web development summer internship applications close at 5:00 PM today.",Internship
 60,"Grand Music and Dance Night will be held on the college campus ground this Saturday.",Event
+61,"The remedial examination form filling window closes tomorrow at 5:00 PM on the university portal.",Exam
+62,"The final exam time table for odd semester 2025 has been uploaded to the examination cell portal.",Exam
+63,"Students appearing for the backlog exams must verify their subject codes on the hall ticket.",Exam
+64,"Seating matrix for the upcoming university theory examinations is displayed on the main notice board.",Exam
+65,"The digital signal processing practical exam will be conducted in DSP Lab 2 on Wednesday.",Exam
+66,"Students caught using unfair means during semester examinations will face disciplinary action.",Exam
+67,"Supplementary exam results for all engineering branches have been declared online.",Exam
+68,"Engineering Graphics end-term drawing sheet examination will commence at 9:00 AM sharp.",Exam
+69,"The mid-semester evaluation for major project phase 2 will be held before the external examiner panel.",Exam
+70,"Model answer keys for the internal test 1 have been posted outside the faculty cabin.",Exam
+71,"Students must report to their allocated examination rooms 15 minutes before paper distribution.",Exam
+72,"Exam notification: The Environmental Science objective paper will be conducted in Computer Lab 4.",Exam
+73,"The tentative dates for winter 2025 semester end examinations are scheduled from December 1st.",Exam
+74,"Collection of grade cards and re-evaluation marksheets for final year students starts next week.",Exam
+75,"The continuous internal evaluation test schedule for semester 3 is now accessible on LMS.",Exam
+76,"Viva-voce examination for the Compiler Design practical course will be held on Friday morning.",Exam
+77,"Exam rules reminder: Smart watches and mobile phones are strictly forbidden inside examination halls.",Exam
+78,"The schedule for the unit test series in Applied Mathematics has been circulated to class groups.",Exam
+79,"All students must verify their exam registration details before the hall ticket generation deadline.",Exam
+80,"Final project defense and external viva exam schedule will be shared by the academic coordinator.",Exam
+81,"Submit your Natural Language Processing assignment on tokenization and lemmatization by Monday.",Assignment
+82,"Submit the design document and ER diagrams for your software engineering team project.",Assignment
+83,"The deadline for submitting assignment 4 on computer network socket programming is extended.",Assignment
+84,"Please upload the solved exercises of Digital Logic Design chapter 5 to the Google Drive folder.",Assignment
+85,"Submit the weekly physics laboratory manual with completed graphs and observation tables.",Assignment
+86,"All students must commit their latest code to the GitHub repository for the mobile app assignment.",Assignment
+87,"Submit the comparative analysis assignment on relational versus NoSQL databases before Thursday.",Assignment
+88,"Reminder: Microcontroller lab assignment 2 grading will take place during tomorrow's lab session.",Assignment
+89,"Submit your technical essay assignment on ethical implications of generative artificial intelligence.",Assignment
+90,"Upload your recorded video presentation and slide deck for the professional communication assignment.",Assignment
+91,"Late assignment submissions will attract a deduction of five marks per day past the deadline.",Assignment
+92,"Submit the final simulation report and MATLAB code for the Control Systems laboratory course.",Assignment
+93,"Submit your group assignment solutions for Algorithm Complexity Analysis via the student portal.",Assignment
+94,"Complete the quiz and programming homework on binary search trees before tomorrow midnight.",Assignment
+95,"Submit the printed copy of your Chemistry lab record to the subject in-charge by Friday noon.",Assignment
+96,"The portal is now open for submitting assignment 3 on deep learning convolutional neural networks.",Assignment
+97,"Submit the weekly seminar report and bibliography to your assigned faculty mentor by Wednesday.",Assignment
+98,"Students must upload their UI/UX Figma prototypes for the human-computer interaction assignment.",Assignment
+99,"Submit your answers for the tutorial on differential equations and Laplace transforms.",Assignment
+100,"Final call to submit all pending laboratory assignments before the internal marks lock date.",Assignment
+101,"Daily lecture attendance will be locked by the subject faculty 10 minutes after class begins.",Attendance
+102,"Students who have less than 75% aggregate attendance will not receive their examination hall tickets.",Attendance
+103,"Attendance percentage for the current semester is now updated and viewable on the ERP portal.",Attendance
+104,"Please verify your subject attendance on the college app and report discrepancies to the admin office.",Attendance
+105,"Biometric attendance punching is mandatory at both morning entry and evening exit gates.",Attendance
+106,"Students representing the college in sports tournaments must submit duty leave attendance slips.",Attendance
+107,"Medical leave certificates for attendance compensation must be submitted within three days of joining.",Attendance
+108,"Attendance for the mandatory career training workshop will be recorded at the beginning and end.",Attendance
+109,"Students with severe attendance shortage must attend mandatory weekend extra remedial sessions.",Attendance
+110,"Warning notices regarding attendance default have been dispatched to registered parent addresses.",Attendance
+111,"Faculty members will conduct physical roll call during every tutorial and practical class.",Attendance
+112,"No attendance credit will be given for proxy attendance or late arrivals exceeding 15 minutes.",Attendance
+113,"The cutoff date for calculating semester attendance eligibility has been fixed as November 20th.",Attendance
+114,"Students can check their monthly attendance logs on the department digital display board.",Attendance
+115,"Attendance during industrial training and field study visits carries weightage in overall evaluation.",Attendance
+116,"Attendance records for the laboratory sessions will be verified prior to signing the term work journal.",Attendance
+117,"Class attendance percentages below 60% will require a formal parent-teacher conference meeting.",Attendance
+118,"The university mandates strict 80% physical attendance for practical laboratory courses.",Attendance
+119,"Duty leave attendance approval requests must be endorsed by the faculty club coordinator.",Attendance
+120,"The final compiled attendance register for the semester has been submitted to the principal's office.",Attendance
+121,"Applications are invited for the 6-month Software Engineering Internship at Oracle IDC.",Internship
+122,"Goldman Sachs is organizing an on-campus hiring drive for Summer Analyst Interns 2026.",Internship
+123,"Paid Machine Learning Research Internship available at IIT Bombay AI Research Laboratory.",Internship
+124,"Cisco is hiring Network Engineering Interns; eligible third-year students can apply online.",Internship
+125,"The training and placement cell announces the opening of Deloitte summer consulting internships.",Internship
+126,"Qualcomm hardware engineering internship test will be held this Saturday at 10:00 AM.",Internship
+127,"Apply for the Data Analyst Internship with stipend at a top FinTech startup in Pune.",Internship
+128,"Summer internship interview shortlisted candidates for Tata Consultancy Services are announced.",Internship
+129,"Morgan Stanley internship registration link is live on the department placement portal.",Internship
+130,"IBM is offering full-time winter internship opportunities for cloud and quantum computing domains.",Internship
+131,"Students seeking off-campus internship NOC clearance must submit the employer offer letter.",Internship
+132,"Adobe is conducting an online assessment test for Women in Tech Research Internship 2026.",Internship
+133,"Paid frontend developer internship opening for students with strong React and TypeScript skills.",Internship
+134,"Placement cell alert: Barclays is hiring Technology Summer Interns for their Pune technology center.",Internship
+135,"Research assistant intern positions available in Robotics and Computer Vision Laboratory.",Internship
+136,"Infosys Springboard internship program registration deadline has been extended to this Sunday.",Internship
+137,"Selected interns for the DRDO research internship program must report for background verification.",Internship
+138,"Capgemini is conducting a pre-internship briefing session tomorrow in the seminar hall.",Internship
+139,"Apply for the 3-month UI/UX Product Design Internship at an early-stage venture capital firm.",Internship
+140,"The college placement cell has released the schedule for the upcoming campus internship drive.",Internship
+141,"The Department of Information Technology invites you to the National Level Hackathon Innovate 2025.",Event
+142,"Annual Technical Symposium 'TechPulse 2025' featuring coding contests and robo-wars begins Friday.",Event
+143,"Join us for an expert webinar on 'Cybersecurity Trends and Threat Intelligence' this Wednesday.",Event
+144,"ACM Student Chapter is organizing a hands-on workshop on Git and GitHub collaborative workflows.",Event
+145,"The Annual Inter-College Cricket and Football Tournament registrations are now open.",Event
+146,"Orientation session for newly admitted first-year engineering students will be held in the auditorium.",Event
+147,"IEEE Student Branch presents a two-day workshop on Embedded Systems and IoT Prototyping.",Event
+148,"The Cultural Club invites auditions for the annual musical drama production and band competition.",Event
+149,"Join the campus cleanliness and tree plantation drive organized by the National Service Scheme.",Event
+150,"Department of Management Studies is organizing an inter-college Business Plan Pitch competition.",Event
+151,"Google Developer Student Clubs is hosting an interactive session on Cloud and DevOps fundamentals.",Event
+152,"The college photography club is holding a photo walk and landscape photography contest this Sunday.",Event
+153,"Annual Convocation Ceremony for graduating batch 2025 will be held on December 18th.",Event
+154,"The Literature and Quiz Society announces the Annual Open Campus Quiz Championship 2025.",Event
+155,"Join the Department of Electronics for the guest lecture on 5G/6G Wireless Communication systems.",Event
+156,"Women in Engineering affinity group invites all students to the Leadership and Mentorship Summit.",Event
+157,"The Department of Mechanical Engineering is organizing an industrial robotics and CAD design contest.",Event
+158,"TEDx Campus event ticket booking is now live on the student activities portal.",Event
+159,"Alumni Homecoming and Mentorship Meet will be celebrated on the college campus this weekend.",Event
+160,"Annual College Fest 'Aura 2025' celebrity night passes can be collected from student council desk.",Event
+161,"The semester backlog theory examination form link is now active on the university examination portal.",Exam
+162,"Final year viva-voce and dissertation evaluation for postgraduate students will start from next Monday.",Exam
+163,"Students must verify their roll numbers and room allocations on the exam notice board before entering.",Exam
+164,"The re-evaluation portal for Semester 6 end-term examinations will remain open until Friday.",Exam
+165,"Practical exam batch divisions for the Object-Oriented Programming laboratory have been published.",Exam
+166,"Students appearing for the competitive scholarship test must bring their admit cards tomorrow.",Exam
+167,"The schedule for the third internal assessment test for mechanical engineering has been updated.",Exam
+168,"University examination instructions: Calculators with text storage capabilities are not permitted.",Exam
+169,"Submit your Artificial Intelligence assignment on A* search and alpha-beta pruning by Wednesday.",Assignment
+170,"Please upload the solved problems of Circuit Theory assignment 3 in PDF format on LMS.",Assignment
+171,"Submit the software requirements specification SRS document for the web development project.",Assignment
+172,"Reminder to submit the Computer Graphics transformation assignment before the portal closes.",Assignment
+173,"Submit your case study assignment on industrial supply chain optimization by Friday afternoon.",Assignment
+174,"Upload the completed Python pandas data wrangling homework on the department classroom.",Assignment
+175,"Submit the laboratory journal with faculty signatures for the fluid mechanics practical course.",Assignment
+176,"The submission window for the distributed systems assignment 2 will close tonight at midnight.",Assignment
+177,"Students failing to meet the minimum 75 percent attendance criterion will be placed on the defaulters list.",Attendance
+178,"Attendance in morning laboratory sessions is strictly compulsory and cannot be compensated in other batches.",Attendance
+179,"The college attendance tracking system will send automated alert emails to students with low attendance.",Attendance
+180,"Official duty leave for attending national conferences will be considered only with valid attendance proofs.",Attendance
+181,"Biometric attendance machines have been installed on all floors; students must punch in before 9:15 AM.",Attendance
+182,"The monthly subject-wise attendance summary for September is available on the student dashboard.",Attendance
+183,"Parent-teacher meeting regarding severe attendance deficit will be held this Saturday morning.",Attendance
+184,"Absence from scheduled class tests without prior formal leave will result in zero attendance credit.",Attendance
+185,"Samsung R&D Institute is hiring Software Engineer Interns for their Bangalore research center.",Internship
+186,"Intel is inviting online applications for Summer Hardware and Verification Intern positions.",Internship
+187,"The placement cell announces an on-campus internship screening test for Amazon AWS Cloud Interns.",Internship
+188,"Apply for the 6-month paid internship in Full Stack MERN Development at an ed-tech company.",Internship
+189,"J.P. Morgan Chase is organizing the summer internship recruitment and fellowship drive.",Internship
+190,"Shortlisted students for the Microsoft Summer Internship technical interview should check their email.",Internship
+191,"Paid Data Science and NLP internship opportunities for third and final year students at an AI startup.",Internship
+192,"Texas Instruments is hiring Graduate Technical Interns for embedded systems and analog design.",Internship
+193,"The Annual Inter-College Technical Debate and Quiz Championship 2025 will be held this Friday.",Event
+194,"Join the Department of Computer Engineering for the Cloud Computing and DevOps Summit.",Event
+195,"The Music Society is hosting an acoustic open mic and band performance night in the campus garden.",Event
+196,"Registrations are now open for the National Space and Astronomy Workshop 2025.",Event
+197,"Youth Leadership Summit 2025 featuring prominent startup founders scheduled for next Tuesday.",Event
+198,"The Fine Arts Club invites all students to participate in the Canvas and Poster Painting competition.",Event
+199,"E-Summit 2025: Participate in the Startup Pitch Deck and Angel Investor Round table.",Event
+200,"The Annual Environmental Sustainability Fair and Green Energy Exhibition opens this Thursday.",Event

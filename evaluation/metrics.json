@@ -1,0 +1,106 @@
+{
+    "evaluation_split": "Held-Out Test Set (20%)",
+    "total_test_samples": 40,
+    "target_criteria": {
+        "target_accuracy": ">= 85%",
+        "target_macro_f1": ">= 0.80",
+        "target_min_recall": ">= 0.75"
+    },
+    "actual_measured_results": {
+        "accuracy": 0.9,
+        "macro_precision": 0.9028,
+        "macro_recall": 0.9,
+        "macro_f1": 0.8999,
+        "weighted_f1": 0.8999
+    },
+    "target_met": true,
+    "classification_report": {
+        "Assignment": {
+            "precision": 0.8888888888888888,
+            "recall": 1.0,
+            "f1-score": 0.9411764705882353,
+            "support": 8.0
+        },
+        "Attendance": {
+            "precision": 0.875,
+            "recall": 0.875,
+            "f1-score": 0.875,
+            "support": 8.0
+        },
+        "Event": {
+            "precision": 1.0,
+            "recall": 0.875,
+            "f1-score": 0.9333333333333333,
+            "support": 8.0
+        },
+        "Exam": {
+            "precision": 0.75,
+            "recall": 0.75,
+            "f1-score": 0.75,
+            "support": 8.0
+        },
+        "Internship": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 8.0
+        },
+        "accuracy": 0.9,
+        "macro avg": {
+            "precision": 0.9027777777777779,
+            "recall": 0.9,
+            "f1-score": 0.8999019607843138,
+            "support": 40.0
+        },
+        "weighted avg": {
+            "precision": 0.9027777777777779,
+            "recall": 0.9,
+            "f1-score": 0.8999019607843138,
+            "support": 40.0
+        }
+    },
+    "classes": [
+        "Assignment",
+        "Attendance",
+        "Event",
+        "Exam",
+        "Internship"
+    ],
+    "confusion_matrix": [
+        [
+            8,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            7,
+            0,
+            1,
+            0
+        ],
+        [
+            0,
+            0,
+            7,
+            1,
+            0
+        ],
+        [
+            1,
+            1,
+            0,
+            6,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            8
+        ]
+    ]
+}

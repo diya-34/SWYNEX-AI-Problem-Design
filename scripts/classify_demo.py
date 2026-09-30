@@ -1,62 +1,55 @@
 """
 SWYNEX Technologies Internship - Task 1: AI Problem Design
-Script: classify_demo.py
-Description: Interactive demonstration for Student Announcement Classification.
+Script: scripts/classify_demo.py
+Description: CLI demonstration for Student Announcement Classification using the trained ML model.
 """
 
 import os
-import csv
+import joblib
 
-CATEGORIES = ["Exam", "Assignment", "Attendance", "Internship", "Event"]
-
-# Indicative keyword patterns for demo simulation based on problem design
-KEYWORD_RULES = {
-    "Exam": ["exam", "examination", "mid-term", "end sem", "test", "viva", "hall ticket", "supplementary", "blueprint", "marks"],
-    "Assignment": ["assignment", "homework", "submit", "submission", "lab", "project report", "tutorial", "code files", "case study"],
-    "Attendance": ["attendance", "present", "absent", "roll call", "biometric", "75 percent", "deficiency", "shortage", "condonation"],
-    "Internship": ["internship", "intern", "hiring", "stipend", "career", "interview", "trainee", "assistantship", "research intern"],
-    "Event": ["event", "festival", "hackathon", "workshop", "webinar", "contest", "gala", "sports meet", "exhibition", "celebration"]
-}
-
-def simulate_classification(text: str):
-    """Simple rule-based baseline matcher to simulate text classification prototype."""
-    text_lower = text.lower()
-    scores = {cat: 0 for cat in CATEGORIES}
+def load_trained_model():
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    vec_path = os.path.join(base_dir, "model", "vectorizer.pkl")
+    clf_path = os.path.join(base_dir, "model", "classifier.pkl")
     
-    for cat, keywords in KEYWORD_RULES.items():
-        for kw in keywords:
-            if kw in text_lower:
-                scores[cat] += 1
-                
-    best_cat = max(scores, key=scores.get)
-    if scores[best_cat] == 0:
-        return "General / Uncategorized", 0.50
-    
-    confidence = min(0.70 + (scores[best_cat] * 0.12), 0.98)
-    return best_cat, confidence
+    if os.path.exists(vec_path) and os.path.exists(clf_path):
+        return joblib.load(vec_path), joblib.load(clf_path), True
+    return None, None, False
 
 def main():
     print("=" * 70)
     print(" SWYNEX Technologies Internship - Task 1: AI Problem Design")
-    print(" Interactive Student Announcement Classification Demo")
+    print(" Real ML Classifier CLI Demo (TF-IDF + Logistic Regression)")
     print("=" * 70)
-    
-    print("\n[+] Testing pre-defined sample announcements:\n")
+
+    vectorizer, classifier, is_loaded = load_trained_model()
+
+    if not is_loaded:
+        print("\n[WARNING] Model artifacts not found. Please run 'python model/train_model.py' first.")
+        return
+
     sample_tests = [
-        "The DBMS examination will be conducted on Monday morning in Hall B.",
-        "Submit your Machine Learning lab assignment before Friday at 11:59 PM.",
-        "All students must maintain at least 75 percent attendance for eligibility.",
-        "Applications for the Summer AI and Data Science Internship are now open.",
-        "Registration for HackFest 2025 national technical hackathon is open!"
+        ("The DBMS examination will be conducted on Monday morning in Hall B.", "Exam"),
+        ("Submit your Machine Learning lab assignment before Friday at 11:59 PM.", "Assignment"),
+        ("All students must maintain at least 75 percent attendance for eligibility.", "Attendance"),
+        ("Applications for the Summer AI and Data Science Internship are now open.", "Internship"),
+        ("Registration for HackFest 2025 national technical hackathon is open!", "Event")
     ]
-    
-    for idx, sample in enumerate(sample_tests, 1):
-        cat, conf = simulate_classification(sample)
-        print(f"  {idx}. Input : \"{sample}\"")
-        print(f"     Output: [{cat.upper()}] (Confidence: {conf*100:.1f}%)\n")
-        
+
+    print(f"\n[+] Testing {len(sample_tests)} real-world sample announcements:\n")
+
+    for idx, (sample_text, true_label) in enumerate(sample_tests, 1):
+        vec = vectorizer.transform([sample_text])
+        pred_label = classifier.predict(vec)[0]
+        probs = classifier.predict_proba(vec)[0]
+        confidence = max(probs)
+
+        print(f"  {idx}. Input        : \"{sample_text}\"")
+        print(f"     Ground Truth : {true_label}")
+        print(f"     ML Predicted : [{pred_label.upper()}] (Posterior Probability: {confidence*100:.1f}%)\n")
+
     print("=" * 70)
-    print(" [OK] Interactive demo loaded successfully!")
+    print(" [OK] Real ML CLI evaluation complete!")
     print("=" * 70)
 
 if __name__ == "__main__":
