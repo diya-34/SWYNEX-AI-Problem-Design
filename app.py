@@ -1,11 +1,12 @@
 """
 SWYNEX Technologies Internship - Task 1: AI Problem Design
-Web Application: Student Announcement Classification System (ML Prototype)
+Application: Student Announcement Intelligence System
 Tech Stack: Python, Streamlit, Pandas, Scikit-Learn, Joblib, Matplotlib, Seaborn
 """
 
 import os
 import json
+from datetime import datetime
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,11 +14,14 @@ import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Import NLP utilities
+from model.nlp_utils import extract_information, calculate_priority, generate_extractive_summary
+
 # -----------------------------------------------------------------------------
-# 1. Page Configuration & Styling
+# 1. Page Configuration & Custom CSS
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="SWYNEX Technologies – Task 1",
+    page_title="SWYNEX Technologies – Student Announcement Intelligence System",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -34,7 +38,7 @@ st.markdown("""
     
     .main-header {
         background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-        padding: 2rem 2.2rem;
+        padding: 2.2rem 2.4rem;
         border-radius: 16px;
         color: white;
         margin-bottom: 1.8rem;
@@ -49,7 +53,7 @@ st.markdown("""
     }
     .main-header .subtitle {
         color: #93c5fd;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 600;
         margin-bottom: 0.4rem;
     }
@@ -89,7 +93,7 @@ st.markdown("""
     .badge-internship { background-color: #d1fae5; color: #065f46; }
     .badge-event { background-color: #fce7f3; color: #831843; }
     
-    /* Result Box */
+    /* Output Result Cards */
     .result-box {
         background: #ffffff;
         border: 2px solid #e2e8f0;
@@ -109,7 +113,7 @@ st.markdown("""
     .result-category {
         font-size: 1.8rem;
         font-weight: 800;
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.4rem;
     }
     .confidence-label {
         font-size: 0.9rem;
@@ -134,6 +138,24 @@ st.markdown("""
         margin-top: 0.8rem;
         font-size: 0.85rem;
         color: #166534;
+    }
+    .info-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+    }
+    .info-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+    }
+    .info-val {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #1e293b;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -214,15 +236,15 @@ def set_text(text):
 # 3. Sidebar Navigation
 # -----------------------------------------------------------------------------
 st.sidebar.markdown("""
-<div style="text-align: center; padding: 1rem 0;">
-    <h2 style="margin: 0; color: #1e3a8a; font-weight: 800; font-size: 1.4rem;">SWYNEX AI</h2>
-    <p style="margin: 0; color: #64748b; font-size: 0.82rem; font-weight: 600;">Task 1: AI Problem Design</p>
+<div style="text-align: center; padding: 0.8rem 0;">
+    <h2 style="margin: 0; color: #1e3a8a; font-weight: 800; font-size: 1.35rem;">SWYNEX AI</h2>
+    <p style="margin: 0; color: #64748b; font-size: 0.82rem; font-weight: 600;">Student Announcement Intelligence</p>
 </div>
 """, unsafe_allow_html=True)
 
 nav_selection = st.sidebar.radio(
     "Navigation",
-    ["🏠 Home", "🔮 Classifier", "📊 Dataset Explorer", "📈 Model Performance", "ℹ️ About"],
+    ["🏠 Home", "🔮 AI Classifier", "📊 Dataset Explorer", "📈 Model Performance", "🕒 Prediction History", "ℹ️ About"],
     label_visibility="collapsed"
 )
 
@@ -235,8 +257,11 @@ else:
 
 if eval_metrics:
     acc_val = eval_metrics["actual_measured_results"]["accuracy"] * 100
+    f1_val = eval_metrics["actual_measured_results"]["macro_f1"]
     st.sidebar.metric(label="Evaluated Test Accuracy", value=f"{acc_val:.1f}%")
-    st.sidebar.metric(label="Evaluated Macro F1", value=f"{eval_metrics['actual_measured_results']['macro_f1']:.4f}")
+    st.sidebar.metric(label="Evaluated Macro F1", value=f"{f1_val:.4f}")
+
+st.sidebar.caption("🌐 Language Scope: English (Gujarati/Hinglish in Roadmap)")
 
 # -----------------------------------------------------------------------------
 # 4. Page: HOME
@@ -244,10 +269,10 @@ if eval_metrics:
 if nav_selection == "🏠 Home":
     st.markdown("""
     <div class="main-header">
-        <div class="subtitle">SWYNEX Technologies – Task 1</div>
-        <h1>Student Announcement Classification</h1>
+        <div class="subtitle">SWYNEX Technologies &bull; Task 1 — AI Problem Design</div>
+        <h1>Student Announcement Intelligence System</h1>
         <div class="description">
-            A practical NLP Text Classification system designed to categorize unstructured college circulars into 5 actionable academic categories.
+            An NLP-based AI system that automatically categorizes college announcements and extracts useful information for students.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -269,70 +294,79 @@ if nav_selection == "🏠 Home":
 
     col1, col2 = st.columns([1.1, 0.9])
     with col1:
-        st.markdown("### 🎯 Problem Overview")
+        st.markdown("### 🎯 System Objective & Intelligence Features")
         st.markdown("""
-        In higher education institutions, students and faculty navigate a deluge of daily notices across WhatsApp, emails, LMS, and departmental notice boards.
+        In academic environments, students receive hundreds of unstructured circulars across WhatsApp groups, LMS boards, and emails.
         
-        Because notices arrive unorganized, students face:
-        - **Critical deadline omissions:** Missing fee submissions, exam form dates, and homework cutoffs.
-        - **Buried career opportunities:** Internship postings and competitive hackathons get overlooked.
-        - **Information clutter:** Inability to quickly prioritize high-urgency notifications.
-
-        **Proposed AI Solution:** A lightweight Natural Language Processing pipeline that takes raw announcement text and outputs a high-confidence category classification.
+        The **Student Announcement Intelligence System** converts noisy messages into structured insights:
+        - **1. Category Classification:** Identifies whether a notice is an Exam, Assignment, Attendance rule, Internship opportunity, or Campus Event.
+        - **2. Priority Scoring:** Evaluates urgency (High / Medium / Low) based on deadlines and time triggers.
+        - **3. Information Extraction:** Extracts Subject, Deadline, Date, Time, and Location automatically.
+        - **4. Short Summary:** Produces concise executive summaries for busy students.
         """)
         
-        st.info("💡 **Ready to test?** Navigate to **🔮 Classifier** from the sidebar to test predictions live!")
+        st.info("💡 **Try it live:** Select **🔮 AI Classifier** in the sidebar to test predictions and information extraction!")
 
     with col2:
-        st.markdown("### 🏗️ Machine Learning Architecture")
+        st.markdown("### 🔄 End-to-End System Workflow")
         st.markdown("""
         ```
         +-------------------------------------------------------+
         |                 Student Announcement                  |
-        |      "Submit your ML assignment before Friday"        |
+        |  "The DBMS exam will be held Monday at 10 AM Hall B"  |
         +-------------------------------------------------------+
                                    │
                                    ▼
         +-------------------------------------------------------+
-        |                  TF-IDF Vectorizer                    |
-        |          (Unigrams + Bigrams, Sublinear TF)           |
+        |            Text Preprocessing & TF-IDF Vector         |
         +-------------------------------------------------------+
                                    │
                                    ▼
         +-------------------------------------------------------+
-        |             Logistic Regression Classifier            |
-        |               (Multinomial Softmax Prob)              |
+        |            Logistic Regression ML Classifier          |
         +-------------------------------------------------------+
                                    │
                                    ▼
         +-------------------------------------------------------+
-        |              Predicted Class & Confidence             |
-        |                  [ ASSIGNMENT: 98.4% ]                |
+        |             Predicted Category + Confidence           |
+        |                    [ EXAM : 96.2% ]                   |
+        +-------------------------------------------------------+
+                                   │
+                                   ▼
+        +-------------------------------------------------------+
+        |     Information Extraction (Subject, Date, Venue)     |
+        |        Subject: DBMS | Date: Monday | Room: Hall B    |
+        +-------------------------------------------------------+
+                                   │
+                                   ▼
+        +-------------------------------------------------------+
+        |       Explainable Priority & Extractive Summary       |
+        |      Priority: HIGH | Summary: [EXAM NOTICE] ...      |
         +-------------------------------------------------------+
         ```
         """)
 
 # -----------------------------------------------------------------------------
-# 5. Page: CLASSIFIER
+# 5. Page: AI CLASSIFIER
 # -----------------------------------------------------------------------------
-elif nav_selection == "🔮 Classifier":
+elif nav_selection == "🔮 AI Classifier":
     st.markdown("""
     <div class="main-header">
-        <div class="subtitle">Live Inference Prototype</div>
+        <div class="subtitle">Live AI Inference & Extraction Engine</div>
         <h1>Classify College Announcement</h1>
         <div class="description">
-            Enter any announcement or pick a sample notice below to inspect the real-time ML prediction and class probabilities.
+            Enter any announcement or pick a sample notice below to inspect the real-time ML prediction, priority rating, and entity extraction.
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     # Example Announcements
     SAMPLE_EXAMPLES = [
-        ("📝 Exam", "The End Semester Examination schedule for Computer Engineering has been published on the student portal."),
-        ("📚 Assignment", "Submit your Machine Learning lab assignment before Friday at 11:59 PM."),
+        ("📝 Exam", "The DBMS examination will be conducted on Monday at 10 AM in Hall B."),
+        ("📚 Assignment", "Submit your Machine Learning assignment by 5 October at 11:59 PM in Lab 3."),
         ("⏱️ Attendance", "All students must maintain at least 75 percent attendance to be eligible for the semester examinations."),
         ("💼 Internship", "Applications for the Summer AI and Data Science Internship at TCS are now open for final year students."),
-        ("🎉 Event", "Registration for HackFest 2025 annual national technical hackathon is officially open.")
+        ("🎉 Event", "Registration for HackFest 2025 annual national technical hackathon is officially open in the auditorium.")
     ]
 
     st.markdown("##### 💡 Try a Sample Announcement")
@@ -344,14 +378,14 @@ elif nav_selection == "🔮 Classifier":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    col_input, col_out = st.columns([1.2, 0.8])
+    col_input, col_out = st.columns([1.1, 0.9])
 
     with col_input:
         st.markdown("### ✍️ Announcement Input")
         user_input = st.text_area(
-            label="Enter your announcement",
+            label="Enter your college announcement...",
             value=st.session_state["input_text"],
-            placeholder="Type or paste any student circular, notice, or announcement here...",
+            placeholder="Type or paste any student circular, notice, or announcement here (e.g. 'Submit your Python assignment by Friday at 5:00 PM in Lab 2')...",
             height=140,
             label_visibility="collapsed"
         )
@@ -359,16 +393,19 @@ elif nav_selection == "🔮 Classifier":
         classify_btn = st.button("🚀 Classify Announcement", type="primary", use_container_width=True)
 
     with col_out:
-        st.markdown("### 🎯 Classification Result")
+        st.markdown("### 🎯 AI Prediction & Intelligence Output")
         
         if classify_btn:
-            if not user_input.strip():
+            clean_input = user_input.strip()
+            if not clean_input:
                 st.warning("⚠️ Please enter an announcement text before classifying.")
+            elif len(clean_input.split()) < 3:
+                st.warning("⚠️ Announcement is very short. Please provide a more descriptive notice for reliable classification.")
             elif not model_loaded:
                 st.error("❌ Model not loaded! Please run `python model/train_model.py` to train the model first.")
             else:
                 # 1. Vectorize and Predict
-                input_vec = vectorizer.transform([user_input])
+                input_vec = vectorizer.transform([clean_input])
                 pred_label = classifier.predict(input_vec)[0]
                 pred_probs = classifier.predict_proba(input_vec)[0]
                 
@@ -383,18 +420,48 @@ elif nav_selection == "🔮 Classifier":
                 display_color = meta.get("color", "#64748b") if not is_low_conf else "#64748b"
                 display_icon = meta.get("icon", "📄")
 
+                # Priority & Information Extraction
+                extracted_info = extract_information(clean_input)
+                prio_data = calculate_priority(clean_input, pred_label)
+                summary_text = generate_extractive_summary(clean_input, pred_label, extracted_info)
+
                 # Display Main Result Card
                 st.markdown(f"""
                 <div class="result-box" style="border-color: {display_color};">
-                    <div class="result-title">Predicted Category</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="result-title">Predicted Category</span>
+                        <span style="background-color: {prio_data['badge_bg']}; color: {prio_data['color']}; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 9999px;">
+                            PRIORITY: {prio_data['level']}
+                        </span>
+                    </div>
                     <div class="result-category" style="color: {display_color};">
                         {display_icon} {display_label}
                     </div>
                     <div class="confidence-label">Prediction Probability: <strong>{confidence*100:.1f}%</strong></div>
+                    <div style="font-size: 0.8rem; color: #64748b;">Priority Reason: {prio_data['reason']}</div>
                 </div>
                 """, unsafe_allow_html=True)
                 
                 st.progress(float(confidence))
+
+                # Information Extraction Card Grid
+                st.markdown("##### 📌 Extracted Academic Information")
+                inf_cols = st.columns(3)
+                with inf_cols[0]:
+                    st.markdown(f"""<div class="info-card"><div class="info-label">Subject / Course</div><div class="info-val">{extracted_info['Subject']}</div></div>""", unsafe_allow_html=True)
+                    st.markdown(f"""<div class="info-card"><div class="info-label">Date</div><div class="info-val">{extracted_info['Date']}</div></div>""", unsafe_allow_html=True)
+                with inf_cols[1]:
+                    st.markdown(f"""<div class="info-card"><div class="info-label">Deadline</div><div class="info-val">{extracted_info['Deadline']}</div></div>""", unsafe_allow_html=True)
+                    st.markdown(f"""<div class="info-card"><div class="info-label">Time</div><div class="info-val">{extracted_info['Time']}</div></div>""", unsafe_allow_html=True)
+                with inf_cols[2]:
+                    st.markdown(f"""<div class="info-card"><div class="info-label">Location / Venue</div><div class="info-val">{extracted_info['Location']}</div></div>""", unsafe_allow_html=True)
+
+                # Summary Section
+                st.markdown(f"""
+                <div style="background: #f1f5f9; border-left: 3px solid #64748b; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; color: #334155; margin-top: 0.6rem;">
+                    <strong>📝 Short Summary (Extractive Baseline):</strong> {summary_text}
+                </div>
+                """, unsafe_allow_html=True)
 
                 # Explain Prediction ("Why this prediction?")
                 feature_names = vectorizer.get_feature_names_out()
@@ -412,13 +479,13 @@ elif nav_selection == "🔮 Classifier":
                     st.markdown(f"""
                     <div class="explanation-box">
                         <strong>🔍 Why this prediction?</strong> Key detected vocabulary terms: 
-                        <code>{", ".join(top_terms)}</code> influenced the model towards <strong>{pred_label}</strong>.
+                        <code>{", ".join(top_terms)}</code> contributed strongly towards <strong>{pred_label}</strong>.
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
                     <div class="explanation-box">
-                        <strong>🔍 Why this prediction?</strong> Model inferred intent from context distribution across class weights.
+                        <strong>🔍 Why this prediction?</strong> Inferred from global vocabulary distribution across class weights.
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -430,24 +497,16 @@ elif nav_selection == "🔮 Classifier":
 
                 # Save to session history
                 st.session_state["history"].append({
-                    "Announcement": user_input[:80] + ("..." if len(user_input) > 80 else ""),
+                    "Timestamp": datetime.now().strftime("%H:%M:%S"),
+                    "Announcement": clean_input[:80] + ("..." if len(clean_input) > 80 else ""),
                     "Category": pred_label,
-                    "Confidence": f"{confidence*100:.1f}%"
+                    "Confidence": f"{confidence*100:.1f}%",
+                    "Priority": prio_data["level"],
+                    "Subject": extracted_info["Subject"],
+                    "Deadline": extracted_info["Deadline"]
                 })
         else:
             st.info("👈 Enter an announcement or pick a sample button, then click **Classify Announcement**.")
-
-    # Prediction History Section
-    st.markdown("---")
-    st.markdown("### 🕒 Session Prediction History")
-    if st.session_state["history"]:
-        hist_df = pd.DataFrame(st.session_state["history"])
-        st.dataframe(hist_df, use_container_width=True, hide_index=True)
-        if st.button("🗑️ Clear History", key="clear_hist_btn"):
-            st.session_state["history"] = []
-            st.rerun()
-    else:
-        st.caption("No classifications in this session yet. Test announcements above to view session history.")
 
 # -----------------------------------------------------------------------------
 # 6. Page: DATASET EXPLORER
@@ -567,15 +626,51 @@ elif nav_selection == "📈 Model Performance":
                 st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
             
             st.markdown(r"""
-            **Key Performance Insights:**
-            - **Internship & Assignment:** Demonstrated high precision and recall ($F_1 \ge 0.94$) due to distinctive domain vocabularies (`internship`, `hiring`, `submit`, `assignment`).
-            - **Exam vs. Attendance:** Handled clean separation, with attendance cues centered around `biometric`, `75 percent`, and `absent`.
+            **Metric Descriptions:**
+            - **Accuracy (90.00%):** Proportion of total test announcements categorized correctly.
+            - **Precision (90.28%):** Accuracy of positive predictions per class (minimizes false alarms).
+            - **Recall (90.00%):** Ability of the model to identify all relevant notices for each category.
+            - **Macro F1 (0.8999):** Balanced harmonic mean of precision and recall averaged equally across all 5 classes.
             """)
     else:
         st.warning("No evaluation metrics found. Please run `python evaluation/evaluate_model.py` to generate authentic evaluation results.")
 
 # -----------------------------------------------------------------------------
-# 8. Page: ABOUT
+# 8. Page: PREDICTION HISTORY
+# -----------------------------------------------------------------------------
+elif nav_selection == "🕒 Prediction History":
+    st.markdown("""
+    <div class="main-header">
+        <div class="subtitle">Session Activity Log</div>
+        <h1>Prediction History</h1>
+        <div class="description">
+            Review announcements classified during your current active browser session.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.session_state["history"]:
+        hist_df = pd.DataFrame(st.session_state["history"])
+        st.dataframe(hist_df, use_container_width=True, hide_index=True)
+        
+        col_clear, col_count = st.columns([1, 4])
+        with col_clear:
+            if st.button("🗑️ Clear Session History", key="clear_hist_btn_main"):
+                st.session_state["history"] = []
+                st.rerun()
+        with col_count:
+            st.caption(f"Total session queries recorded: {len(hist_df)}")
+    else:
+        st.info("No predictions recorded in this session yet. Head over to **🔮 AI Classifier** to classify announcements.")
+
+    st.markdown("""
+    <div class="disclaimer-note">
+        🔒 <strong>Privacy Notice:</strong> History is maintained in temporary browser session memory only. No student input is saved to disk or permanent databases.
+    </div>
+    """, unsafe_allow_html=True)
+
+# -----------------------------------------------------------------------------
+# 9. Page: ABOUT
 # -----------------------------------------------------------------------------
 elif nav_selection == "ℹ️ About":
     st.markdown("""
@@ -604,10 +699,10 @@ elif nav_selection == "ℹ️ About":
     with tab2:
         st.markdown("""
         ### AI Task Formulation
-        - **Task:** Multi-Class Natural Language Processing (NLP) / Text Classification.
+        - **Task:** Multi-Class Natural Language Processing (NLP) / Text Classification & Information Extraction.
         - **Input:** Single-message college announcement text string (English).
-        - **Output:** Exactly one of 5 classes: `Exam`, `Assignment`, `Attendance`, `Internship`, `Event`.
-        - **Pipeline:** Raw Text $\\rightarrow$ TF-IDF Vectorizer (Unigrams + Bigrams) $\\rightarrow$ Logistic Regression Classifier.
+        - **Output:** Category (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`), Prediction Probability, Priority Level, Extracted Entities, and Short Summary.
+        - **Pipeline:** Raw Text $\\rightarrow$ TF-IDF Vectorizer (Unigrams + Bigrams) $\\rightarrow$ Logistic Regression Classifier $\\rightarrow$ Rule-based NLP Entity & Urgency Extraction.
         """)
 
     with tab3:
@@ -635,10 +730,10 @@ elif nav_selection == "ℹ️ About":
         """)
 
 # -----------------------------------------------------------------------------
-# 9. Footer
+# 10. Footer
 # -----------------------------------------------------------------------------
 st.markdown("""
 <div style="text-align: center; color: #94a3b8; font-size: 0.82rem; padding: 2rem 0 1rem 0;">
-    SWYNEX Technologies &bull; Task 1: AI Problem Design &bull; Student Announcement Classification System
+    SWYNEX Technologies &bull; Task 1: AI Problem Design &bull; Student Announcement Intelligence System
 </div>
 """, unsafe_allow_html=True)

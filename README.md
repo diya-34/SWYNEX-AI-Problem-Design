@@ -1,7 +1,7 @@
-# SWYNEX AI Problem Design & Machine Learning Prototype
+# Student Announcement Intelligence System
 
 [![SWYNEX Internship](https://img.shields.io/badge/SWYNEX%20Technologies-Internship%20Task%201-blue.svg)](https://github.com)
-[![Task](https://img.shields.io/badge/Task-AI%20Problem%20Design%20%26%20ML%20Prototype-brightgreen.svg)](https://github.com)
+[![Task](https://img.shields.io/badge/Task-AI%20Problem%20Design%20%26%20Intelligence%20System-brightgreen.svg)](https://github.com)
 [![Model](https://img.shields.io/badge/Model-TF--IDF%20%2B%20Logistic%20Regression-orange.svg)](https://github.com)
 [![Evaluated Accuracy](https://img.shields.io/badge/Test%20Accuracy-90.00%25-success.svg)](https://github.com)
 
@@ -9,29 +9,25 @@
 
 ## 1. Project Overview
 
-This repository contains the complete problem design specification, balanced dataset, machine learning pipeline, empirical evaluation, and interactive Streamlit web application for **Task 1: AI Problem Design** under the **SWYNEX Technologies Internship**.
+This repository contains the complete problem design specification, balanced benchmark dataset, machine learning pipeline, empirical evaluation, and full-featured multi-page **Streamlit Web Application** for **Task 1: AI Problem Design** of the **SWYNEX Technologies Internship**.
 
-The objective of this project is to systematically formulate, build, and evaluate a practical Natural Language Processing (NLP) text classification solution: **"Student Announcement Classification using AI"**.
-
-The system automatically classifies incoming college announcements into five actionable categories:
-1. **Exam**
-2. **Assignment**
-3. **Attendance**
-4. **Internship**
-5. **Event**
+The **Student Announcement Intelligence System** converts noisy, unstructured college circulars into actionable, structured insights by combining:
+1. **Multi-Class Text Classification:** Categorizes announcements into 5 standard classes (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`).
+2. **Confidence / Prediction Probability:** Calculates the model's posterior probability for each prediction.
+3. **Explainable Priority Scoring:** Evaluates urgency levels (`HIGH`, `MEDIUM`, `LOW`) with transparent trigger reasons.
+4. **Information Extraction:** Automatically parses **Subject**, **Date**, **Time**, **Location/Venue**, and **Deadline** (returns *"Not detected"* when unavailable).
+5. **Extractive Summarization:** Generates a concise 1-sentence synopsis for rapid reading.
 
 ---
 
 ## 2. Problem Statement
 
-College students and faculty receive hundreds of notices each semester across disparate channels (WhatsApp groups, Slack/Discord, emails, bulletin boards, and Learning Management Systems).
+College students and faculty receive hundreds of circulars each semester across fragmented channels (WhatsApp groups, Slack/Discord, institutional emails, LMS portals, and physical notice boards).
 
-Because these circulars arrive in unstructured, mixed streams:
-- Students frequently miss critical academic deadlines (exam registration forms, laboratory submissions, fee payments).
-- Valuable career and internship opportunities get buried under routine administrative announcements.
-- Information overload causes high cognitive friction in everyday campus life.
-
-This project delivers an automated NLP pipeline that accurately classifies announcement text into five standardized categories.
+Because these messages arrive unorganized:
+- Students frequently miss critical deadlines (exam forms, assignment submissions, fee payment cutoffs).
+- High-value career opportunities (internships, research assistantships, hackathons) get buried.
+- Information overload causes severe cognitive friction in daily academic life.
 
 ---
 
@@ -39,85 +35,102 @@ This project delivers an automated NLP pipeline that accurately classifies annou
 
 | User Category | Description | Primary Value Delivered |
 | :--- | :--- | :--- |
-| **Primary Users: College Students** | Undergraduate & postgraduate students | Triage incoming notices, filter by category, and avoid missing vital deadlines. |
-| **Secondary Users: Faculty Members** | Professors and teaching assistants | Automatically route department announcements to targeted category feeds. |
-| **Secondary Users: Academic Administration** | Dean's office, exam cell, placement cell | Standardize broadcast messaging across all departments. |
+| **Primary Users: College Students** | Undergraduate & postgraduate students | Instant notice categorization, deadline detection, urgency alerts, and search. |
+| **Secondary Users: Faculty Members** | Course instructors and teaching assistants | Automatically route departmental notices to targeted category streams. |
+| **Secondary Users: Academic Administration** | Dean's office, exam cell, placement & training cell | Standardize circular archiving and eliminate missed notices. |
 
 ---
 
-## 4. AI Use Case
+## 4. Key Features
 
-- **Task Type:** Multi-Class Natural Language Processing (NLP) / Supervised Text Classification.
-- **Input:** Single-message college announcement or notice in text format (English).
-- **Output:** Exactly one predicted category label among 5 distinct classes (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`) accompanied by the model's posterior prediction probability.
+- **Real-Time ML Classification:** Categorizes notices into `Exam`, `Assignment`, `Attendance`, `Internship`, or `Event`.
+- **Confidence Scoring:** Displays authentic posterior probability distributions.
+- **Priority Detection:** Identifies `HIGH`, `MEDIUM`, or `LOW` urgency based on deadlines and temporal triggers.
+- **Entity Extraction Engine:** Extracts academic subjects, dates, times, venues, and deadlines without hallucinations.
+- **Explainable Feature Attribution ("Why this prediction?"):** Reveals the key vocabulary terms that influenced the model.
+- **Interactive Dataset Explorer:** Search and filter 200 benchmark announcements with distribution charts.
+- **Model Performance Dashboard:** Displays authentic evaluated test metrics and Seaborn confusion matrix.
+- **Session Prediction History:** Tracks queries during the active session with a single-click purge button.
 
 ---
 
-## 5. Illustrative Examples
+## 5. AI / ML Approach
 
-| ID | Announcement Text (Input) | Ground Truth Label | Model Output |
-| :---: | :--- | :---: | :---: |
-| 1 | "The End Semester Examination schedule for Computer Engineering has been published on the student portal." | **Exam** | `Exam` |
-| 2 | "Submit your Machine Learning lab assignment before Friday at 11:59 PM." | **Assignment** | `Assignment` |
-| 3 | "All students must maintain at least 75 percent attendance to be eligible for the semester examinations." | **Attendance** | `Attendance` |
-| 4 | "Applications for the Summer AI and Data Science Internship at TCS are now open for final year students." | **Internship** | `Internship` |
-| 5 | "Registration for HackFest 2025 annual national technical hackathon is officially open." | **Event** | `Event` |
+The system follows a standard, modular Natural Language Processing (NLP) pipeline:
+
+```
++-------------------------------------------------------+
+|                 Student Announcement                  |
+|  "The DBMS exam will be held Monday at 10 AM Hall B"  |
++-------------------------------------------------------+
+                           │
+                           ▼
++-------------------------------------------------------+
+|            Text Preprocessing & TF-IDF Vector         |
+|         (Unigram + Bigram, Sublinear Term Freq)       |
++-------------------------------------------------------+
+                           │
+                           ▼
++-------------------------------------------------------+
+|            Logistic Regression ML Classifier          |
+|              (Multinomial Softmax Output)             |
++-------------------------------------------------------+
+                           │
+                           ▼
++-------------------------------------------------------+
+|             Predicted Category + Confidence           |
+|                    [ EXAM : 96.2% ]                   |
++-------------------------------------------------------+
+                           │
+                           ▼
++-------------------------------------------------------+
+|     Information Extraction (Subject, Date, Venue)     |
+|        Subject: DBMS | Date: Monday | Room: Hall B    |
++-------------------------------------------------------+
+                           │
+                           ▼
++-------------------------------------------------------+
+|       Explainable Priority & Extractive Summary       |
+|      Priority: HIGH | Summary: [EXAM NOTICE] ...      |
++-------------------------------------------------------+
+```
 
 ---
 
 ## 6. Dataset Specification
 
 - **File Path:** [`data/announcements.csv`](file:///data/announcements.csv)
-- **Total Records:** **200 realistic sample announcements**
+- **Total Records:** **200 realistic, balanced samples**
 - **Balance:** Exactly **40 samples per category** across all 5 classes
-- **Dataset Columns:**
+- **Dataset Structure:**
   - `id`: Integer unique identifier (1 to 200)
-  - `text`: String text of the academic notice
+  - `text`: String text of the academic announcement
   - `label`: Categorical target (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`)
-- **Sanitization & Ethics:** The dataset is synthetic/manually curated for this prototype and contains **100% anonymized data** with zero Personally Identifiable Information (no student names, IDs, phone numbers, or grades).
+- **Sanitization & Ethics:** Synthetic/manually curated dataset containing **100% anonymized data** with zero Personally Identifiable Information (no student names, IDs, phone numbers, or private records).
 
 ---
 
-## 7. Machine Learning Pipeline Architecture
+## 7. Model Architecture
 
-```
-+-------------------------------------------------------+
-|                 Student Announcement                  |
-|     "Submit your Machine Learning assignment by Friday"     |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|                  TF-IDF Vectorizer                    |
-|        (Unigrams + Bigrams, Sublinear Term Freq)      |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|             Logistic Regression Classifier            |
-|              (Multinomial Softmax Probabilities)      |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|              Predicted Class & Confidence             |
-|                 [ ASSIGNMENT : 98.4% ]                |
-+-------------------------------------------------------+
-```
-
-### Model Components
 1. **Feature Extraction (`model/vectorizer.pkl`):** Scikit-Learn `TfidfVectorizer` configured with unigrams and bigrams (`ngram_range=(1, 2)`), English stop-word filtering, and sublinear term frequency scaling (`sublinear_tf=True`), yielding 1,970 vocabulary features.
 2. **Classifier (`model/classifier.pkl`):** Scikit-Learn `LogisticRegression` (`C=1.0`, `max_iter=1000`, `random_state=42`) with L2 regularization and multinomial softmax output.
 
 ---
 
-## 8. Empirical Model Evaluation (Actual Results)
+## 8. Evaluation Method
 
 The model was evaluated on an isolated **20% held-out test split (40 unseen samples)** using stratified partitioning:
+- **80% Stratified Training Split (160 samples)**
+- **20% Held-Out Testing Split (40 samples)**
+- Deterministic evaluation via fixed `random_state=42`.
 
-### Target Criteria vs. Actual Measured Results
+---
 
-| Evaluation Metric | Target Success Criteria | Actual Measured Result | Status |
+## 9. Actual Evaluation Results (No Fabricated Metrics)
+
+### Target Success Criteria vs. Actual Measured Results
+
+| Metric | Target Success Criteria | Actual Measured Result | Status |
 | :--- | :---: | :---: | :---: |
 | **Overall Accuracy** | $\ge 85.00\%$ | **90.00%** | **PASSED (MET)** |
 | **Macro F1-Score** | $\ge 0.8000$ | **0.8999** | **PASSED (MET)** |
@@ -125,18 +138,23 @@ The model was evaluated on an isolated **20% held-out test split (40 unseen samp
 | **Macro Recall** | $\ge 75.00\%$ | **90.00%** | **PASSED (MET)** |
 | **Weighted F1-Score**| - | **0.8999** | **High** |
 
-### Per-Class Performance Breakdown
+### Detailed Per-Class Classification Report
 
-| Category | Precision | Recall | F1-Score | Support (Test Split) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Assignment** | 0.89 | 1.00 | **0.94** | 8 |
-| **Attendance** | 0.88 | 0.88 | **0.88** | 8 |
-| **Event** | 1.00 | 0.88 | **0.93** | 8 |
-| **Exam** | 0.75 | 0.75 | **0.75** | 8 |
-| **Internship** | 1.00 | 1.00 | **1.00** | 8 |
-| **Overall Average** | **0.90** | **0.90** | **0.90** | **40** |
+```text
+              precision    recall  f1-score   support
 
-### Confusion Matrix
+  Assignment       0.89      1.00      0.94         8
+  Attendance       0.88      0.88      0.88         8
+       Event       1.00      0.88      0.93         8
+        Exam       0.75      0.75      0.75         8
+  Internship       1.00      1.00      1.00         8
+
+    accuracy                           0.90        40
+   macro avg       0.90      0.90      0.90        40
+weighted avg       0.90      0.90      0.90        40
+```
+
+### Confusion Matrix Heatmap
 
 The empirical confusion matrix generated by [`evaluation/evaluate_model.py`](file:///evaluation/evaluate_model.py) is saved at [`evaluation/confusion_matrix.png`](file:///evaluation/confusion_matrix.png):
 
@@ -144,52 +162,12 @@ The empirical confusion matrix generated by [`evaluation/evaluate_model.py`](fil
 
 ---
 
-## 9. Quick Start & Execution Guide
-
-Follow these exact commands in your terminal:
-
-### 1. Install Dependencies
-```powershell
-python -m pip install -r requirements.txt
-```
-
-### 2. Train the Real ML Model
-```powershell
-python model/train_model.py
-```
-
-### 3. Evaluate the Model & Generate Metrics
-```powershell
-python evaluation/evaluate_model.py
-```
-
-### 4. Launch the Streamlit Web Application
-```powershell
-streamlit run app.py
-```
-*(Or `python -m streamlit run app.py`)*
-
-The web application will open automatically at:  
-👉 **`http://localhost:8501`**
-
----
-
-## 10. Streamlit Web Dashboard Features
-
-- **🏠 Home:** Project overview, supported category cards, and architecture diagrams.
-- **🔮 Classifier:** Real-time ML inference with posterior class probability, "Why this prediction?" feature attribution, quick sample buttons, and session prediction history.
-- **📊 Dataset Explorer:** Searchable, category-filtered table of the 200 announcements with interactive distribution charts.
-- **📈 Model Performance:** Live display of authentic test metrics, confusion matrix heatmap, and per-class classification reports.
-- **ℹ️ About:** Complete AI problem design specifications, constraints, evaluation plan, and ethical guidelines.
-
----
-
-## 11. Project Repository Structure
+## 10. Project Structure
 
 ```
 SWYNEX-AI-Problem-Design/
 │
-├── app.py                         # Multi-page Streamlit AI Dashboard Web App
+├── app.py                         # Multi-page Streamlit AI Web Dashboard
 ├── requirements.txt               # Dependencies (streamlit, pandas, scikit-learn, etc.)
 ├── README.md                      # Comprehensive project documentation
 ├── .gitignore                     # Git ignore rules
@@ -199,6 +177,7 @@ SWYNEX-AI-Problem-Design/
 │
 ├── model/
 │   ├── train_model.py             # Script to train TF-IDF + Logistic Regression
+│   ├── nlp_utils.py               # Entity extraction, Priority scoring, and Summarization
 │   ├── vectorizer.pkl             # Trained TF-IDF vectorizer artifact
 │   ├── classifier.pkl             # Trained Logistic Regression classifier artifact
 │   ├── train_data.csv             # 80% Stratified Training split (160 samples)
@@ -210,14 +189,14 @@ SWYNEX-AI-Problem-Design/
 │   └── confusion_matrix.png       # High-resolution Seaborn confusion matrix heatmap
 │
 ├── scripts/
-│   ├── classify_demo.py           # CLI classification demo script
-│   └── generate_visuals.py        # Visual charts generator
+│   ├── classify_demo.py           # CLI classification demo with entity extraction
+│   └── generate_visuals.py        # Visual charts & distribution generator
 │
 ├── docs/
-│   └── AI_Problem_Design.md       # Formal problem design specification document
+│   └── AI_Problem_Design.md       # Formal AI Problem Design specification document
 │
 └── screenshots/
-    ├── README.md                  # Visual assets documentation
+    ├── README.md                  # Screenshots & visuals guide
     ├── confusion_matrix.png       # Mirrored confusion matrix plot
     ├── dataset_distribution.png   # Class distribution bar chart
     └── system_workflow.png        # System pipeline diagram
@@ -225,23 +204,84 @@ SWYNEX-AI-Problem-Design/
 
 ---
 
-## 12. Privacy, Safety & Ethical Guidelines
+## 11. Installation
 
-1. **Zero PII Policy:** No student names, roll numbers, contact information, or sensitive academic records are gathered or processed.
-2. **Prediction Transparency:** Probability scores are displayed alongside each prediction so users can gauge confidence levels.
-3. **Low-Stakes Scope:** The application serves purely as an informational productivity and sorting tool; it is not permitted for disciplinary, grading, or administrative decision-making.
+Clone the repository and install required packages:
 
----
+```powershell
+# Navigate to project folder
+cd "SWYNEX-AI-Problem-Design"
 
-## 13. Limitations & Future Roadmap
-
-- **Multi-Topic Ambiguity:** Announcements that span multiple categories (e.g. *"Exam will be held on Monday and attendance is compulsory"*) are currently forced into a single dominant label. Future versions will support multi-label ranking.
-- **Multilingual Support:** Future roadmap includes extending NLP models to Indian regional languages, including **Gujarati** and Hindi.
-- **Transformer Embeddings:** Upgrading from TF-IDF to fine-tuned sentence transformers (`all-MiniLM-L6-v2`) for enhanced semantic context.
-- **Human-in-the-Loop Review:** Flagging predictions with confidence $< 0.50$ for manual verification.
+# Install dependencies
+python -m pip install -r requirements.txt
+```
 
 ---
 
-## 14. Conclusion
+## 12. How to Train the Model
 
-This project completes the **Task 1: AI Problem Design** milestone for the **SWYNEX Technologies Internship**. By combining formal problem design, a balanced 200-record dataset, a trained and evaluated TF-IDF + Logistic Regression model (**90.00% test accuracy**), and a full-featured Streamlit web application, it establishes a reliable, production-ready foundation for future AI deployments.
+To retrain the TF-IDF feature extractor and Logistic Regression classifier:
+
+```powershell
+python model/train_model.py
+```
+
+---
+
+## 13. How to Evaluate the Model
+
+To evaluate the model on the held-out test split, compute all metrics, and generate the confusion matrix:
+
+```powershell
+python evaluation/evaluate_model.py
+```
+
+---
+
+## 14. How to Run the Streamlit Application
+
+To start the interactive multi-page web dashboard:
+
+```powershell
+streamlit run app.py
+```
+*(Or `python -m streamlit run app.py`)*
+
+The dashboard will open automatically in your web browser at:  
+👉 **`http://localhost:8501`**
+
+---
+
+## 15. Limitations
+
+- **Monolingual Focus:** Evaluated primarily on English announcements.
+- **Compound Intent:** Notices containing multiple disparate topics (e.g., exam dates combined with attendance warnings) map to a single dominant category.
+- **Regex Extraction Scope:** Entity extraction relies on rule-based NLP patterns, which may miss non-standard phrasing without full LLM context.
+
+---
+
+## 16. Ethical & Privacy Considerations
+
+1. **Zero PII Policy:** The dataset excludes all student names, enrollment numbers, contact details, grades, and personal email addresses.
+2. **Session-Only Memory:** User query history is stored strictly in ephemeral browser memory and is purged upon refresh or via the "Clear History" button.
+3. **Advisory Scope:** The system acts strictly as an informational productivity tool and must never be used for disciplinary, grading, or administrative penalties.
+
+---
+
+## 17. Future Improvements Roadmap
+
+- **Phase 2 (Backend & Persistence):** FastAPI REST backend, SQLite/PostgreSQL database, and role-based authentication.
+- **Phase 3 (Generative NLP & Regional Languages):** Integration of Small Language Models (SLMs) for abstractive summarization and support for **Gujarati** and Hindi.
+- **Phase 4 (RAG over Academic Documents):** Retrieval-Augmented Generation over college syllabus books, exam manuals, and academic calendars.
+- **Phase 5 (Notification Webhooks):** Automated WhatsApp and Email notification webhooks for high-priority announcements.
+
+---
+
+## 18. Deployment Plan
+
+The project is structured for immediate, one-click deployment on **Streamlit Community Cloud**:
+1. Push this repository to GitHub as a **Public** repository.
+2. Visit [share.streamlit.io](https://share.streamlit.io) and log in with GitHub.
+3. Select this repository: `SWYNEX-AI-Problem-Design`.
+4. Set the main file path to: `app.py`.
+5. Click **Deploy**!

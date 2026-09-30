@@ -1,189 +1,182 @@
-# Formal AI Problem Design Specification
+# Formal AI Problem Design Specification: Student Announcement Intelligence System
 
-**Document Title:** System Specification for Student Announcement Classification  
 **Organization / Program:** SWYNEX Technologies Internship  
-**Task Module:** Task 1 – AI Problem Design  
-**Domain:** Natural Language Processing (NLP) / Text Classification  
-**Status:** Proposal / Specification Phase  
+**Task Module:** Task 1 – AI Problem Design & Machine Learning Prototype  
+**Domain:** Natural Language Processing (NLP) / Multi-Class Text Classification & Information Extraction  
+**Status:** Implemented & Evaluated Prototype  
 
 ---
 
 ## 1. Executive Summary
 
-This document outlines the end-to-end problem formulation, technical boundaries, functional requirements, evaluation criteria, and ethical safeguards for an AI-driven academic text classification system. The proposed system, titled **"Student Announcement Classification using AI"**, converts unstructured college announcements into five actionable categories (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`).
+This document provides the formal engineering specification for the **Student Announcement Intelligence System**, developed for Task 1 of the **SWYNEX Technologies Internship**. 
+
+The system transforms raw, unstructured college notices into structured, actionable intelligence by:
+1. Classifying notices into five discrete academic categories (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`) using an empirical Machine Learning classifier (**TF-IDF + Logistic Regression**).
+2. Calculating an explainable **Priority Level** (`HIGH`, `MEDIUM`, `LOW`).
+3. Extracting crucial metadata entities (**Subject/Course**, **Date**, **Time**, **Location/Venue**, **Deadline**).
+4. Generating a concise extractive summary for student consumption.
 
 ---
 
-## 2. User Analysis
+## 2. User Analysis & Stakeholder Needs
 
-### 2.1 Primary Users
-- **College Students:** Need to filter high volumes of academic communication, reduce cognitive overload, prioritize urgent academic deadlines, and quickly locate career opportunities.
+### 2.1 Primary Users (College Students)
+- **Pain Point:** Inundated with notices across disparate communication channels (WhatsApp, Slack, emails, LMS). Important deadlines (exam registrations, assignment submissions) are frequently missed.
+- **System Value:** Rapid categorization, deadline extraction, urgency tagging, and searchable archive.
 
-### 2.2 Secondary Users
-- **Course Instructors & Teaching Staff:** Need assurance that crucial deadlines (e.g., assignment guidelines, test timetables) are properly tagged and delivered.
-- **Academic Administration & Department Coordinators:** Need standardized categorizations across campus-wide circulars and departmental communication streams.
+### 2.2 Secondary Users (Faculty Members & TAs)
+- **Pain Point:** Difficulty ensuring that circulars reach student subsets reliably.
+- **System Value:** Standardized routing and validation of announcement clarity before broadcast.
 
----
-
-## 3. Problem Definition
-
-Academic departments frequently transmit essential notices across disparate channels including WhatsApp, Telegram, email distribution lists, and web-based portals. Because circulars are posted in varied formats without standardized subject lines or tags:
-1. Students frequently miss critical deadlines for fee payments, exam forms, and assignment submissions.
-2. Important career/internship opportunities get buried under routine administrative announcements.
-3. Manual tagging and routing by administrators is time-consuming and prone to human error.
-
-The core problem is formulated as:  
-*How can an automated, lightweight Natural Language Processing system accurately and reliably classify single-message college announcements into discrete, actionable categories without requiring personally identifiable student information?*
+### 2.3 Secondary Users (Academic Administration & Department Coordinators)
+- **Pain Point:** High volume of inquiries regarding missed circulars and exam schedules.
+- **System Value:** Automated archival and consistent categorical tagging across departments.
 
 ---
 
-## 4. AI Task Formulation
+## 3. Problem Definition & Scope
 
-- **Learning Paradigm:** Supervised Multi-Class Text Classification.
-- **Input Modality:** Unstructured natural language text strings (English).
-- **Target Space:** Discrete set $Y \in \{\text{Exam}, \text{Assignment}, \text{Attendance}, \text{Internship}, \text{Event}\}$.
-- **Classification Nature:** Single-label assignment where each input announcement text $x_i$ maps to exactly one primary class label $y_i$.
+Academic notices arrive in unstructured natural language text without standard metadata tags. 
+
+The core AI problem is formally stated as:  
+*Given a single-message college announcement $x \in X$, construct a mapping function $f: X \rightarrow Y$ where $Y = \{\text{Exam}, \text{Assignment}, \text{Attendance}, \text{Internship}, \text{Event}\}$, alongside auxiliary entity extraction functions $g(x) \rightarrow \text{Entities}$ and an explainable urgency function $h(x) \rightarrow \{\text{HIGH}, \text{MEDIUM}, \text{LOW}\}$ without requiring student personally identifiable information.*
 
 ---
 
-## 5. System Workflow Diagram
+## 4. AI System Architecture & Workflow
 
 ```
 +-------------------------------------------------------------+
 |                      1. Data Ingestion                      |
-|       Raw College Announcement Text (e.g., Circular)        |
+|           Raw College Announcement Text (English)           |
 +-------------------------------------------------------------+
                                │
                                ▼
 +-------------------------------------------------------------+
 |                    2. Text Preprocessing                    |
-|   - Case Normalization (Lowercasing)                        |
-|   - Punctuation & Special Character Filtering               |
+|   - Lowercasing, Whitespace Normalization                   |
 |   - Stopword Removal & Word Tokenization                    |
-|   - Morphological Lemmatization / Stemming                  |
 +-------------------------------------------------------------+
                                │
                                ▼
 +-------------------------------------------------------------+
 |               3. Feature Extraction / Representation        |
 |   - TF-IDF Vectorizer (Unigram + Bigram N-grams)            |
-|   - Pre-trained Contextual Embeddings (Transformer)         |
+|   - Sublinear Term Frequency Scaling (sublinear_tf=True)    |
+|   - Vocabulary Size: 1,970 features                         |
 +-------------------------------------------------------------+
                                │
                                ▼
 +-------------------------------------------------------------+
 |                4. Machine Learning Inference                |
-|   - Multi-Class Classifier (Logistic Regression / NB / SVM) |
-|   - Softmax Probability Distribution over 5 Classes         |
+|   - Multi-Class Logistic Regression Classifier (C=1.0)      |
+|   - Softmax Posterior Class Probability Distribution        |
 +-------------------------------------------------------------+
                                │
                                ▼
 +-------------------------------------------------------------+
-|                 5. Output & Post-Processing                 |
-|   - Primary Label: [Exam | Assignment | Attendance | ...]   |
-|   - Confidence Score (Probability Metric)                   |
-|   - Fallback Flag if Confidence < Threshold                 |
+|               5. Entity Extraction & Urgency Engine         |
+|   - Regex/NLP Entity Matcher: Subject, Date, Time, Venue    |
+|   - Deadline Parser & Explainable Priority Scorer           |
+|   - Rule-based Extractive Summary Generator                 |
++-------------------------------------------------------------+
+                               │
+                               ▼
++-------------------------------------------------------------+
+|                      6. User Interface                      |
+|   - Streamlit AI Dashboard (Classifier, Dataset, Metrics)   |
 +-------------------------------------------------------------+
 ```
 
 ---
 
-## 6. Input and Output Specifications
+## 5. Input and Output Specifications
 
-### 6.1 Input Specification
+### 5.1 Input Specification
 - **Type:** String (UTF-8 encoded text).
-- **Length Constraint:** Typically between 5 and 100 words (single sentence to short paragraph).
-- **Language:** English.
-- **Example Input:** `"All students must submit their Cloud Computing assignment on GitHub before Sunday."`
+- **Length Constraint:** 5 to 150 words.
+- **Language Scope:** English (Current production scope).
 
-### 6.2 Output Specification
-- **Type:** Categorical string label + Confidence probability float.
-- **Value Domain:** `{"Exam", "Assignment", "Attendance", "Internship", "Event"}`.
-- **Example Output:** 
-  ```json
-  {
-    "category": "Assignment",
-    "confidence": 0.94
-  }
-  ```
-
----
-
-## 7. Data Source & Engineering Plan
-
-### 7.1 Initial Benchmark Dataset
-- An initial balanced synthetic dataset of 60 representative academic announcements has been prepared in `data/announcements.csv`.
-- Each record contains `id`, `text`, and `label`.
-- Classes are evenly distributed (12 records per category) to prevent majority-class bias during preliminary design.
-
-### 7.2 Scaled Data Acquisition Plan (Future Stages)
-- Collect publicly accessible historical departmental circulars and student council notices.
-- Implement strict PII sanitization to strip names, student IDs, phone numbers, and physical room numbers.
-- Perform dual-annotator verification on ambiguous circulars to compute inter-annotator agreement (Cohen's Kappa $\kappa \ge 0.85$).
+### 5.2 Output Specification
+- **Predicted Category:** Single label from `{"Exam", "Assignment", "Attendance", "Internship", "Event"}`.
+- **Prediction Probability:** Float value $[0.0, 1.0]$.
+- **Priority Level:** `{"HIGH", "MEDIUM", "LOW"}` with explainable trigger reason.
+- **Extracted Entities:**
+  - `Subject`: Course/topic name (or *"Not detected"*).
+  - `Date`: Specific calendar or relative date (or *"Not detected"*).
+  - `Time`: Clock timestamp (or *"Not detected"*).
+  - `Location`: Classroom, hall, or portal (or *"Not detected"*).
+  - `Deadline`: Submission or registration cutoff (or *"Not detected"*).
+- **Short Summary:** Structured 1-sentence synopsis.
 
 ---
 
-## 8. Technical Constraints & Boundary Conditions
+## 6. Dataset Specification
 
-1. **Monolingual Limitation:** Restricted to English text in current design.
-2. **Fixed Label Granularity:** The taxonomy does not currently accommodate sub-categories (e.g., "Mid-Term Exam" vs. "Final Exam").
-3. **Compound Announcements:** Announcements covering multiple concurrent subjects (e.g., a notice mentioning both exam dates and mandatory attendance) require single dominant-intent resolution.
-4. **Computational Footprint:** The classification inference should be lightweight enough to run on standard serverless architectures or client-side web applications.
-
----
-
-## 9. Evaluation Approach
-
-### 9.1 Data Partitioning Strategy
-- **Training Set (80%):** Model parameter training and vocabulary formulation.
-- **Testing Set (20%):** Completely isolated hold-out split for objective generalization benchmarking.
-- **Cross-Validation:** 5-Fold Stratified Cross-Validation on the training pool.
-
-### 9.2 Formal Metrics
-Let $TP_c$, $FP_c$, and $FN_c$ represent True Positives, False Positives, and False Negatives for class $c \in C$:
-
-$$\text{Precision}_c = \frac{TP_c}{TP_c + FP_c}, \quad \text{Recall}_c = \frac{TP_c}{TP_c + FN_c}$$
-
-$$\text{Macro } F1 = \frac{1}{|C|} \sum_{c \in C} \frac{2 \cdot \text{Precision}_c \cdot \text{Recall}_c}{\text{Precision}_c + \text{Recall}_c}$$
-
-- **Confusion Matrix Analysis:** Systematic inspection of cross-class leakage (specifically between `Exam` and `Assignment`).
+- **File:** `data/announcements.csv`
+- **Volume:** **200 realistic, balanced samples** (exactly 40 per class).
+- **Columns:** `id`, `text`, `label`.
+- **Privacy & Sanitization:** Synthetic, manually curated dataset containing **zero Personally Identifiable Information (PII)**. All names, student IDs, and private details are completely sanitized.
 
 ---
 
-## 10. Target Success Criteria
+## 7. Empirical Evaluation: Target vs. Actual Results
 
-| Evaluation Dimension | Benchmark Metric | Target Threshold | Rationale |
-| :--- | :--- | :--- | :--- |
-| **Overall Accuracy** | Test Accuracy | $\ge 85\%$ | Ensures reliable day-to-day usability for students. |
-| **Macro F1-Score** | Macro-Averaged F1 | $\ge 0.80$ | Guards against class imbalance and poor performance on low-frequency classes. |
-| **Minimum Class Recall** | Per-Class Recall | $\ge 0.75$ | Critical categories like `Exam` and `Attendance` must not be routinely dropped. |
-| **Inference Latency** | Response Time | $< 100\text{ ms}$ | Enables instantaneous categorizations on incoming notification streams. |
+The model was trained on an **80% stratified training split (160 samples)** and evaluated on a **20% held-out test split (40 unseen samples)** with `random_state=42`.
 
-> *Note: These figures represent targeted design benchmarks for future model implementation and do not represent fabricated experimental results.*
+### 7.1 Target Success Criteria vs. Actual Measured Results
+
+| Metric | Target Success Criteria | Actual Measured Result | Status |
+| :--- | :---: | :---: | :---: |
+| **Overall Accuracy** | $\ge 85.00\%$ | **90.00%** | **PASSED (MET)** |
+| **Macro F1-Score** | $\ge 0.8000$ | **0.8999** | **PASSED (MET)** |
+| **Macro Precision** | - | **90.28%** | **High** |
+| **Macro Recall** | $\ge 75.00\%$ | **90.00%** | **PASSED (MET)** |
+| **Weighted F1-Score**| - | **0.8999** | **High** |
+
+### 7.2 Detailed Per-Class Classification Report
+
+```text
+              precision    recall  f1-score   support
+
+  Assignment       0.89      1.00      0.94         8
+  Attendance       0.88      0.88      0.88         8
+       Event       1.00      0.88      0.93         8
+        Exam       0.75      0.75      0.75         8
+  Internship       1.00      1.00      1.00         8
+
+    accuracy                           0.90        40
+   macro avg       0.90      0.90      0.90        40
+weighted avg       0.90      0.90      0.90        40
+```
 
 ---
 
-## 11. Risk Analysis & Mitigation
+## 8. Explainable Priority & Entity Extraction Logic
 
-| Risk ID | Identified Risk | Impact | Mitigation Strategy |
-| :---: | :--- | :--- | :--- |
-| **R1** | Classification error on high-priority notices (e.g., exam timetable mislabeled as event). | High | Integrate confidence thresholding; trigger human verification or alert student if confidence $< 0.65$. |
-| **R2** | Ambiguous, multi-topic announcement texts. | Medium | Extract multi-sentence clauses or adopt multi-label ranking in future iterations. |
-| **R3** | Non-standard abbreviations and campus slang. | Medium | Build a domain-specific academic token dictionary during text preprocessing. |
+### 8.1 Priority Heuristic Logic
+- **HIGH:** Triggers when immediate temporal keywords are detected (`"today"`, `"tomorrow"`, `"deadline"`, `"urgent"`, `"last date"`, `"mandatory"`, `"defaulter"`, `"detained"`) or when the category is `Exam`.
+- **MEDIUM:** Triggers for actionable deadlines (`"submit"`, `"submission"`, `"registration"`, `"attendance"`, `"interview"`, `"internship"`).
+- **LOW:** General informational campus notices and events without immediate action items.
 
----
-
-## 12. Privacy and Ethical Considerations
-
-1. **Zero Personally Identifiable Information (PII):** Student identities, grades, disciplinary records, and financial details are explicitly excluded from the dataset.
-2. **Safe Operational Boundary:** The model functions strictly as an informational assistant and productivity filter. It is not empowered to make academic standing, attendance penalty, or administrative decisions.
-3. **Data Licensing and Anonymity:** Publicly sourced campus notices must undergo regex-based scrubbing of faculty phone numbers and email addresses.
+### 8.2 Safe Entity Extraction Rule
+- Utilizes deterministic regex patterns over domain vocabulary.
+- When an entity cannot be identified with high confidence, the system returns `"Not detected"` rather than generating hallucinations.
 
 ---
 
-## 13. Future Roadmap & Improvements
+## 9. Privacy, Ethical & Safety Guardrails
 
-- **Phase 2 (Dataset Expansion):** Scale dataset to 1,000+ validated announcements across multiple universities.
-- **Phase 3 (Multilingual & Regional NLP):** Expand classification pipelines to support regional Indian languages including **Gujarati** and Hindi.
-- **Phase 4 (Contextual Embeddings):** Experiment with fine-tuned Sentence Transformers (`all-MiniLM-L6-v2`) and Small Language Models (SLMs).
-- **Phase 5 (User Interface & Deployment):** Deploy as a REST API (FastAPI) paired with an interactive frontend (Streamlit / React) and browser extension.
+1. **Zero PII Storage:** Student names, contact details, grades, and confidential records are strictly excluded from dataset and inference storage.
+2. **Session-Only Memory:** In-browser query history exists solely in memory during the active session and is purged upon refresh or via the "Clear History" button.
+3. **Advisory Boundary:** The system is an informational productivity tool and must never be used for disciplinary actions or grade penalties.
+
+---
+
+## 10. Multi-Phase Future Roadmap
+
+- **Phase 2 (Backend & Persistence):** Develop a FastAPI microservice backend with SQLite/PostgreSQL persistence and role-based authentication (Student/Faculty/Admin).
+- **Phase 3 (Generative NLP & Multilingual):** Integrate Small Language Models (SLMs) for abstractive summarization and add support for **Gujarati** and Hindi announcements.
+- **Phase 4 (RAG System):** Implement Retrieval-Augmented Generation (RAG) over official college syllabus handbooks, exam rulebooks, and academic calendars.
+- **Phase 5 (Production Deployment & Alerts):** Deploy on cloud infrastructure (Streamlit Cloud / AWS) with automated WhatsApp/Email notification webhooks.
