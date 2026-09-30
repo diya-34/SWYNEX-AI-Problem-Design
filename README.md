@@ -1,289 +1,430 @@
-# Student Announcement Intelligence System
+# 🤖 SWYNEX AI Problem Design
 
-[![SWYNEX Internship](https://img.shields.io/badge/SWYNEX%20Technologies-Internship%20Task%201-blue.svg)](https://github.com)
-[![Task](https://img.shields.io/badge/Task-AI%20Problem%20Design%20%26%20Intelligence%20System-brightgreen.svg)](https://github.com)
-[![Model](https://img.shields.io/badge/Model-TF--IDF%20%2B%20Logistic%20Regression-orange.svg)](https://github.com)
-[![Evaluated Accuracy](https://img.shields.io/badge/Test%20Accuracy-90.00%25-success.svg)](https://github.com)
+## Student Announcement Intelligence System
 
----
+An AI-powered system that automatically classifies college/student announcements into meaningful categories such as **Exam, Assignment, Attendance, Internship, and Event**.
 
-## 1. Project Overview
-
-This repository contains the complete problem design specification, balanced benchmark dataset, machine learning pipeline, empirical evaluation, and full-featured multi-page **Streamlit Web Application** for **Task 1: AI Problem Design** of the **SWYNEX Technologies Internship**.
-
-The **Student Announcement Intelligence System** converts noisy, unstructured college circulars into actionable, structured insights by combining:
-1. **Multi-Class Text Classification:** Categorizes announcements into 5 standard classes (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`).
-2. **Confidence / Prediction Probability:** Calculates the model's posterior probability for each prediction.
-3. **Explainable Priority Scoring:** Evaluates urgency levels (`HIGH`, `MEDIUM`, `LOW`) with transparent trigger reasons.
-4. **Information Extraction:** Automatically parses **Subject**, **Date**, **Time**, **Location/Venue**, and **Deadline** (returns *"Not detected"* when unavailable).
-5. **Extractive Summarization:** Generates a concise 1-sentence synopsis for rapid reading.
+This project was developed as part of the **SWYNEX Technologies Internship – Task 1: AI Problem Design**.
 
 ---
 
-## 2. Problem Statement
+## 📌 Problem Statement
 
-College students and faculty receive hundreds of circulars each semester across fragmented channels (WhatsApp groups, Slack/Discord, institutional emails, LMS portals, and physical notice boards).
+Students receive many announcements through WhatsApp groups, emails, notice boards, and college portals.
 
-Because these messages arrive unorganized:
-- Students frequently miss critical deadlines (exam forms, assignment submissions, fee payment cutoffs).
-- High-value career opportunities (internships, research assistantships, hackathons) get buried.
-- Information overload causes severe cognitive friction in daily academic life.
+Important information can easily be missed because announcements are mixed together.
 
----
+For example:
 
-## 3. Target Users
+> "Submit your Machine Learning assignment before Friday at 11:59 PM."
 
-| User Category | Description | Primary Value Delivered |
-| :--- | :--- | :--- |
-| **Primary Users: College Students** | Undergraduate & postgraduate students | Instant notice categorization, deadline detection, urgency alerts, and search. |
-| **Secondary Users: Faculty Members** | Course instructors and teaching assistants | Automatically route departmental notices to targeted category streams. |
-| **Secondary Users: Academic Administration** | Dean's office, exam cell, placement & training cell | Standardize circular archiving and eliminate missed notices. |
+The system automatically identifies this announcement as:
+
+**Category → Assignment**
+
+The goal is to make student announcements easier to organize and understand using AI/NLP.
 
 ---
 
-## 4. Key Features
+## 🎯 Objectives
 
-- **Real-Time ML Classification:** Categorizes notices into `Exam`, `Assignment`, `Attendance`, `Internship`, or `Event`.
-- **Confidence Scoring:** Displays authentic posterior probability distributions.
-- **Priority Detection:** Identifies `HIGH`, `MEDIUM`, or `LOW` urgency based on deadlines and temporal triggers.
-- **Entity Extraction Engine:** Extracts academic subjects, dates, times, venues, and deadlines without hallucinations.
-- **Explainable Feature Attribution ("Why this prediction?"):** Reveals the key vocabulary terms that influenced the model.
-- **Interactive Dataset Explorer:** Search and filter 200 benchmark announcements with distribution charts.
-- **Model Performance Dashboard:** Displays authentic evaluated test metrics and Seaborn confusion matrix.
-- **Session Prediction History:** Tracks queries during the active session with a single-click purge button.
-
----
-
-## 5. AI / ML Approach
-
-The system follows a standard, modular Natural Language Processing (NLP) pipeline:
-
-```
-+-------------------------------------------------------+
-|                 Student Announcement                  |
-|  "The DBMS exam will be held Monday at 10 AM Hall B"  |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|            Text Preprocessing & TF-IDF Vector         |
-|         (Unigram + Bigram, Sublinear Term Freq)       |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|            Logistic Regression ML Classifier          |
-|              (Multinomial Softmax Output)             |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|             Predicted Category + Confidence           |
-|                    [ EXAM : 96.2% ]                   |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|     Information Extraction (Subject, Date, Venue)     |
-|        Subject: DBMS | Date: Monday | Room: Hall B    |
-+-------------------------------------------------------+
-                           │
-                           ▼
-+-------------------------------------------------------+
-|       Explainable Priority & Extractive Summary       |
-|      Priority: HIGH | Summary: [EXAM NOTICE] ...      |
-+-------------------------------------------------------+
-```
+* Automatically classify student announcements.
+* Reduce manual sorting of announcements.
+* Identify the category of an announcement.
+* Display prediction confidence.
+* Provide a simple and user-friendly interface.
+* Evaluate the machine learning model using standard metrics.
+* Create a foundation for a future real-world student notification system.
 
 ---
 
-## 6. Dataset Specification
+## 🗂️ Announcement Categories
 
-- **File Path:** [`data/announcements.csv`](file:///data/announcements.csv)
-- **Total Records:** **200 realistic, balanced samples**
-- **Balance:** Exactly **40 samples per category** across all 5 classes
-- **Dataset Structure:**
-  - `id`: Integer unique identifier (1 to 200)
-  - `text`: String text of the academic announcement
-  - `label`: Categorical target (`Exam`, `Assignment`, `Attendance`, `Internship`, `Event`)
-- **Sanitization & Ethics:** Synthetic/manually curated dataset containing **100% anonymized data** with zero Personally Identifiable Information (no student names, IDs, phone numbers, or private records).
+The current system supports five categories:
 
----
-
-## 7. Model Architecture
-
-1. **Feature Extraction (`model/vectorizer.pkl`):** Scikit-Learn `TfidfVectorizer` configured with unigrams and bigrams (`ngram_range=(1, 2)`), English stop-word filtering, and sublinear term frequency scaling (`sublinear_tf=True`), yielding 1,970 vocabulary features.
-2. **Classifier (`model/classifier.pkl`):** Scikit-Learn `LogisticRegression` (`C=1.0`, `max_iter=1000`, `random_state=42`) with L2 regularization and multinomial softmax output.
+| Category      | Example                                               |
+| ------------- | ----------------------------------------------------- |
+| 📚 Exam       | "The DBMS examination will be conducted on Monday."   |
+| 📝 Assignment | "Submit your ML assignment before Friday."            |
+| 📊 Attendance | "Students must maintain 75% attendance."              |
+| 💼 Internship | "Applications for the Summer AI Internship are open." |
+| 🎉 Event      | "Registration for HackFest is now open."              |
 
 ---
 
-## 8. Evaluation Method
+## 🧠 AI / Machine Learning Approach
 
-The model was evaluated on an isolated **20% held-out test split (40 unseen samples)** using stratified partitioning:
-- **80% Stratified Training Split (160 samples)**
-- **20% Held-Out Testing Split (40 samples)**
-- Deterministic evaluation via fixed `random_state=42`.
+The project uses Natural Language Processing (NLP) and Machine Learning.
 
----
-
-## 9. Actual Evaluation Results (No Fabricated Metrics)
-
-### Target Success Criteria vs. Actual Measured Results
-
-| Metric | Target Success Criteria | Actual Measured Result | Status |
-| :--- | :---: | :---: | :---: |
-| **Overall Accuracy** | $\ge 85.00\%$ | **90.00%** | **PASSED (MET)** |
-| **Macro F1-Score** | $\ge 0.8000$ | **0.8999** | **PASSED (MET)** |
-| **Macro Precision** | - | **90.28%** | **High** |
-| **Macro Recall** | $\ge 75.00\%$ | **90.00%** | **PASSED (MET)** |
-| **Weighted F1-Score**| - | **0.8999** | **High** |
-
-### Detailed Per-Class Classification Report
+### Workflow
 
 ```text
-              precision    recall  f1-score   support
-
-  Assignment       0.89      1.00      0.94         8
-  Attendance       0.88      0.88      0.88         8
-       Event       1.00      0.88      0.93         8
-        Exam       0.75      0.75      0.75         8
-  Internship       1.00      1.00      1.00         8
-
-    accuracy                           0.90        40
-   macro avg       0.90      0.90      0.90        40
-weighted avg       0.90      0.90      0.90        40
+Student Announcement
+        ↓
+Text Preprocessing
+        ↓
+TF-IDF Vectorization
+        ↓
+Machine Learning Model
+        ↓
+Category Prediction
+        ↓
+Confidence Score
+        ↓
+Result displayed to user
 ```
 
-### Confusion Matrix Heatmap
+### Technologies
 
-The empirical confusion matrix generated by [`evaluation/evaluate_model.py`](file:///evaluation/evaluate_model.py) is saved at [`evaluation/confusion_matrix.png`](file:///evaluation/confusion_matrix.png):
-
-![Confusion Matrix](screenshots/confusion_matrix.png)
+* Python
+* Natural Language Processing (NLP)
+* Scikit-learn
+* Pandas
+* NumPy
+* TF-IDF
+* Logistic Regression
+* Streamlit
+* Joblib
+* Matplotlib
+* Seaborn
 
 ---
 
-## 10. Project Structure
+## 🖥️ Application Features
 
+### 1. AI Classifier
+
+Users can enter an announcement and receive an automatically predicted category.
+
+Example:
+
+```text
+Input:
+Submit your Machine Learning assignment before Friday.
+
+Output:
+Assignment
 ```
+
+### 2. Confidence Score
+
+The application displays the model's prediction confidence.
+
+> Note: Prediction confidence is different from overall model accuracy.
+
+### 3. Dataset Explorer
+
+The application can be used to inspect the announcement dataset and understand the distribution of different categories.
+
+### 4. Model Performance
+
+The project supports evaluation using:
+
+* Accuracy
+* Precision
+* Recall
+* F1 Score
+* Classification Report
+* Confusion Matrix
+
+### 5. Prediction History
+
+Predictions made during the current application session can be reviewed.
+
+---
+
+## 📁 Project Structure
+
+```text
 SWYNEX-AI-Problem-Design/
 │
-├── app.py                         # Multi-page Streamlit AI Web Dashboard
-├── requirements.txt               # Dependencies (streamlit, pandas, scikit-learn, etc.)
-├── README.md                      # Comprehensive project documentation
-├── .gitignore                     # Git ignore rules
+├── app.py
+├── README.md
+├── requirements.txt
+├── .gitignore
 │
 ├── data/
-│   └── announcements.csv          # 200 balanced sample announcements (40 per class)
+│   └── announcements.csv
 │
 ├── model/
-│   ├── train_model.py             # Script to train TF-IDF + Logistic Regression
-│   ├── nlp_utils.py               # Entity extraction, Priority scoring, and Summarization
-│   ├── vectorizer.pkl             # Trained TF-IDF vectorizer artifact
-│   ├── classifier.pkl             # Trained Logistic Regression classifier artifact
-│   ├── train_data.csv             # 80% Stratified Training split (160 samples)
-│   └── test_data.csv              # 20% Held-Out Testing split (40 samples)
+│   ├── train_model.py
+│   ├── classifier.pkl
+│   └── vectorizer.pkl
 │
 ├── evaluation/
-│   ├── evaluate_model.py          # Script to compute actual test metrics
-│   ├── metrics.json               # Computed metrics, classification report & confusion matrix
-│   └── confusion_matrix.png       # High-resolution Seaborn confusion matrix heatmap
+│   ├── evaluate_model.py
+│   └── confusion_matrix.png
 │
 ├── scripts/
-│   ├── classify_demo.py           # CLI classification demo with entity extraction
-│   └── generate_visuals.py        # Visual charts & distribution generator
+│   └── classify_demo.py
 │
 ├── docs/
-│   └── AI_Problem_Design.md       # Formal AI Problem Design specification document
+│   └── AI_Problem_Design.md
 │
 └── screenshots/
-    ├── README.md                  # Screenshots & visuals guide
-    ├── confusion_matrix.png       # Mirrored confusion matrix plot
-    ├── dataset_distribution.png   # Class distribution bar chart
-    └── system_workflow.png        # System pipeline diagram
 ```
 
 ---
 
-## 11. Installation
+## ⚙️ Installation
 
-Clone the repository and install required packages:
+### Step 1: Clone the Repository
 
-```powershell
-# Navigate to project folder
-cd "SWYNEX-AI-Problem-Design"
+```bash
+git clone https://github.com/diya-34/SWYNEX-AI-Problem-Design.git
+```
 
-# Install dependencies
-python -m pip install -r requirements.txt
+### Step 2: Open the Project
+
+```bash
+cd SWYNEX-AI-Problem-Design
+```
+
+### Step 3: Create a Virtual Environment
+
+Windows:
+
+```bash
+python -m venv venv
+```
+
+Activate it:
+
+```bash
+venv\Scripts\activate
+```
+
+### Step 4: Install Dependencies
+
+```bash
+pip install -r requirements.txt
 ```
 
 ---
 
-## 12. How to Train the Model
+## ▶️ Run the Application
 
-To retrain the TF-IDF feature extractor and Logistic Regression classifier:
+Start the Streamlit application:
 
-```powershell
-python model/train_model.py
-```
-
----
-
-## 13. How to Evaluate the Model
-
-To evaluate the model on the held-out test split, compute all metrics, and generate the confusion matrix:
-
-```powershell
-python evaluation/evaluate_model.py
-```
-
----
-
-## 14. How to Run the Streamlit Application
-
-To start the interactive multi-page web dashboard:
-
-```powershell
+```bash
 streamlit run app.py
 ```
-*(Or `python -m streamlit run app.py`)*
 
-The dashboard will open automatically in your web browser at:  
-👉 **`http://localhost:8501`**
+The application will normally open at:
 
----
-
-## 15. Limitations
-
-- **Monolingual Focus:** Evaluated primarily on English announcements.
-- **Compound Intent:** Notices containing multiple disparate topics (e.g., exam dates combined with attendance warnings) map to a single dominant category.
-- **Regex Extraction Scope:** Entity extraction relies on rule-based NLP patterns, which may miss non-standard phrasing without full LLM context.
+```text
+http://localhost:8501
+```
 
 ---
 
-## 16. Ethical & Privacy Considerations
+## 🧪 Example Predictions
 
-1. **Zero PII Policy:** The dataset excludes all student names, enrollment numbers, contact details, grades, and personal email addresses.
-2. **Session-Only Memory:** User query history is stored strictly in ephemeral browser memory and is purged upon refresh or via the "Clear History" button.
-3. **Advisory Scope:** The system acts strictly as an informational productivity tool and must never be used for disciplinary, grading, or administrative penalties.
+### Example 1
+
+```text
+The DBMS examination will be conducted on Monday morning in Hall B.
+```
+
+**Prediction:** `Exam`
+
+### Example 2
+
+```text
+Submit your Machine Learning lab assignment before Friday at 11:59 PM.
+```
+
+**Prediction:** `Assignment`
+
+### Example 3
+
+```text
+All students must maintain at least 75 percent attendance.
+```
+
+**Prediction:** `Attendance`
+
+### Example 4
+
+```text
+Applications for the Summer AI and Data Science Internship are now open.
+```
+
+**Prediction:** `Internship`
+
+### Example 5
+
+```text
+Registration for the national technical hackathon is now open.
+```
+
+**Prediction:** `Event`
 
 ---
 
-## 17. Future Improvements Roadmap
+## 📊 Model Evaluation
 
-- **Phase 2 (Backend & Persistence):** FastAPI REST backend, SQLite/PostgreSQL database, and role-based authentication.
-- **Phase 3 (Generative NLP & Regional Languages):** Integration of Small Language Models (SLMs) for abstractive summarization and support for **Gujarati** and Hindi.
-- **Phase 4 (RAG over Academic Documents):** Retrieval-Augmented Generation over college syllabus books, exam manuals, and academic calendars.
-- **Phase 5 (Notification Webhooks):** Automated WhatsApp and Email notification webhooks for high-priority announcements.
+The model should be evaluated using a separate test set.
+
+Important evaluation metrics include:
+
+```text
+Accuracy
+Precision
+Recall
+F1 Score
+Confusion Matrix
+```
+
+The project should report the **actual measured results** from the trained model.
+
+> Model performance numbers should not be hard-coded or presented as actual results unless they were obtained through evaluation.
 
 ---
 
-## 18. Deployment Plan
+## 🔮 Future Scope
 
-The project is structured for immediate, one-click deployment on **Streamlit Community Cloud**:
-1. Push this repository to GitHub as a **Public** repository.
-2. Visit [share.streamlit.io](https://share.streamlit.io) and log in with GitHub.
-3. Select this repository: `SWYNEX-AI-Problem-Design`.
-4. Set the main file path to: `app.py`.
-5. Click **Deploy**!
-#   S W Y N E X - A I - P r o b l e m - D e s i g n  
- 
+This project can be expanded into a real-world **Student Announcement Intelligence Platform**.
+
+### Phase 1 — Machine Learning
+
+* Improved dataset
+* Better text preprocessing
+* Model comparison
+* Hyperparameter tuning
+
+### Phase 2 — Advanced NLP
+
+* Automatic summarization
+* Deadline extraction
+* Date and time extraction
+* Location extraction
+* Priority detection
+* Gujarati/Hinglish support
+
+### Phase 3 — Backend
+
+* FastAPI backend
+* Database integration
+* User authentication
+* Student/Faculty/Admin roles
+
+### Phase 4 — Generative AI
+
+* LLM-based announcement summaries
+* Natural language questions and answers
+* Personalized student assistance
+
+### Phase 5 — RAG
+
+The system can be connected with college documents such as:
+
+* Academic calendars
+* Exam schedules
+* College notices
+* Internship documents
+* Department information
+* Student guidelines
+
+This would allow students to ask questions such as:
+
+```text
+When is my next exam?
+```
+
+```text
+What is the assignment deadline?
+```
+
+```text
+What attendance is required?
+```
+
+### Phase 6 — Notifications
+
+Future versions can send notifications through:
+
+* Email
+* College portal
+* Mobile application
+* WhatsApp/other supported notification systems
+
+---
+
+## 🌍 Real-World Vision
+
+The long-term goal is to transform the project from a simple classifier into a complete:
+
+> **AI-powered Student Announcement & Notification Assistant**
+
+```text
+College Announcement
+        ↓
+AI Processing
+        ↓
+Classification
+        ↓
+Important Information Extraction
+        ↓
+Summary
+        ↓
+Priority Detection
+        ↓
+Personalized Student Notification
+```
+
+---
+
+## 🔐 Privacy
+
+The project should avoid collecting unnecessary personal information.
+
+For real-world deployment:
+
+* Do not store sensitive student data unnecessarily.
+* Use authentication and authorization.
+* Protect database credentials.
+* Use environment variables for API keys.
+* Follow applicable privacy and security requirements.
+
+---
+
+## 👩‍💻 Developed By
+
+**Diya Patel**
+
+B.Tech Artificial Intelligence & Machine Learning
+CHARUSAT – Charotar University of Science & Technology
+
+### Areas of Interest
+
+* Artificial Intelligence
+* Machine Learning
+* Deep Learning
+* Natural Language Processing
+* Generative AI
+* Large Language Models
+
+---
+
+## 🏢 Internship
+
+**SWYNEX Technologies Internship**
+
+### Task 1
+
+**AI Problem Design – Student Announcement Classification**
+
+---
+
+## 📌 Project Status
+
+🚧 **Currently in development**
+
+The current version focuses on student announcement classification using NLP and Machine Learning, with future plans for summarization, information extraction, RAG, notifications, and production deployment.
+
+---
+
+## ⭐ Acknowledgement
+
+This project was developed as part of the **SWYNEX Technologies Internship Program** to explore practical AI problem solving and real-world machine learning applications.
