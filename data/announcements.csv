@@ -1,0 +1,61 @@
+id,text,label
+1,"The End Semester Examination schedule for Computer Engineering has been published on the student portal.",Exam
+2,"Submit your Machine Learning lab assignment before Friday at 11:59 PM.",Assignment
+3,"All students must maintain at least 75 percent attendance to be eligible for the semester examinations.",Attendance
+4,"Applications for the Summer AI and Data Science Internship at TCS are now open for final year students.",Internship
+5,"Registration for HackFest 2025 annual national technical hackathon is officially open.",Event
+6,"The mid-term examination for Data Structures and Algorithms will be held in Hall A on Monday at 10 AM.",Exam
+7,"Upload your Database Management Systems mini-project report in PDF format on Google Classroom.",Assignment
+8,"Daily attendance will be recorded using biometric scanners starting from next Monday.",Attendance
+9,"Infosys is hiring winter interns for Cloud Engineering; interested candidates must submit their resumes by tomorrow.",Internship
+10,"The Annual Cultural Festival Tarang 2025 will take place from October 15th to October 17th in the main auditorium.",Event
+11,"Practical examination timetable for Semester 5 laboratory courses has been updated on the notice board.",Exam
+12,"Complete and submit the Web Development assignment on responsive design by Wednesday noon.",Assignment
+13,"Students with attendance below 65 percent must meet their academic counselors before the end of the week.",Attendance
+14,"Google Summer of Code mentorship session will be conducted this Saturday for prospective applicants.",Internship
+15,"Robotics Club is hosting an introductory workshop on Arduino and IoT systems this Wednesday.",Event
+16,"The re-evaluation and supplementary examination dates for Semester 4 subjects have been declared.",Exam
+17,"Submit the weekly Software Engineering case study assignment via the department portal.",Assignment
+18,"Attendance for the industrial visit is mandatory for all third-year mechanical engineering students.",Attendance
+19,"Paid internship opportunity available for Flutter developers at an ed-tech startup in Bangalore.",Internship
+20,"Guest lecture on Generative AI and Large Language Models by industry experts scheduled for Thursday.",Event
+21,"Seating arrangements and roll numbers for tomorrow's Physics examination have been posted outside Room 302.",Exam
+22,"The deadline for submitting the Operating Systems process scheduling homework has been extended by two days.",Assignment
+23,"Subject-wise attendance deficiency lists have been emailed to students and their respective proctors.",Attendance
+24,"Internship Drive: Microsoft India is inviting applications for Research Intern positions in Hyderabad.",Internship
+25,"The Annual Sports Meet 2025 registrations are now open for indoor and outdoor sports competitions.",Event
+26,"Internal Assessment Test 2 will commence from the third week of next month.",Exam
+27,"Computer Networks programming assignment 3 is now live; submit your repository link on Moodle.",Assignment
+28,"Students marked absent during morning roll call must present a valid medical certificate to the HOD.",Attendance
+29,"Off-campus internship alert: Amazon Web Services is hiring Cloud Support Associates interns.",Internship
+30,"Join the Department of Computer Science for the Alumni Networking Gala this Saturday evening.",Event
+31,"Hall tickets for the upcoming University Board Examinations can be collected from the administration office.",Exam
+32,"Please submit the hard copy of your Theory of Computation tutorial sheet to the subject faculty.",Assignment
+33,"Faculty members will take attendance five minutes after the start of every lecture.",Attendance
+34,"Selected students for the L&T campus internship interview round have received an email with their interview slots.",Internship
+35,"The Photography and Media Club is organizing an inter-college photography exhibition and contest.",Event
+36,"Viva-voce schedule for the Final Year Capstone Project Phase 1 has been displayed on the notice board.",Exam
+37,"Submit the Cloud Computing assignment analyzing AWS vs Azure architecture by Sunday midnight.",Assignment
+38,"Attendance shortage notices have been sent to parent contact numbers via SMS.",Attendance
+39,"Cybersecurity research lab is offering two paid research assistantships for post-graduate students.",Internship
+40,"Debate Club presents the Inter-Department Parliamentary Debate competition this Friday.",Event
+41,"Important announcement: The Mathematics II examination previously scheduled for Tuesday has been postponed.",Exam
+42,"Don't forget to submit the Python Data Analysis homework notebook before the grading deadline.",Assignment
+43,"Attendance during remedial classes is strictly monitored and mandatory for detained students.",Attendance
+44,"Accenture is conducting an on-campus pre-placement talk and summer internship screening test tomorrow.",Internship
+45,"Coding contest 'CodeSprint 2025' will take place on HackerRank this Sunday from 2 PM to 5 PM.",Event
+46,"All students must carry their college ID cards and hall tickets during the final examinations.",Exam
+47,"Submit the literature survey report for your major project to your assigned project guide by Thursday.",Assignment
+48,"Late arrival by more than 10 minutes will lead to marked absence in the attendance register.",Attendance
+49,"Frontend Developer internship program with pre-placement offer available for pre-final year students.",Internship
+50,"Entrepreneurship Cell is hosting an interactive workshop on Startup Pitching and Seed Funding.",Event
+51,"Sample question papers and blueprint for the Artificial Intelligence end-sem examination are available online.",Exam
+52,"Submit the Microprocessor lab code files and output screenshots on the department LMS.",Assignment
+53,"Students participating in NSS/NCC activities can apply for attendance condonation with proper proof.",Attendance
+54,"Siemens is hiring Graduate Engineering Trainee interns for Industrial Automation; apply via link.",Internship
+55,"The Annual Blood Donation Camp is scheduled for tomorrow at the campus health center.",Event
+56,"Formula sheets and non-programmable calculators will be allowed in the Applied Statistics exam.",Exam
+57,"Final submission reminder for the Object-Oriented Programming Java project repository.",Assignment
+58,"Class representatives are requested to submit the weekly lecture attendance summary sheets.",Attendance
+59,"Full-stack web development summer internship applications close at 5:00 PM today.",Internship
+60,"Grand Music and Dance Night will be held on the college campus ground this Saturday.",Event
