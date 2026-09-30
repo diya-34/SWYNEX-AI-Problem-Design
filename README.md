@@ -285,3 +285,5 @@ The project is structured for immediate, one-click deployment on **Streamlit Com
 3. Select this repository: `SWYNEX-AI-Problem-Design`.
 4. Set the main file path to: `app.py`.
 5. Click **Deploy**!
+#   S W Y N E X - A I - P r o b l e m - D e s i g n  
+ 
